@@ -1,0 +1,25 @@
+{
+    "error": "Insufficient stock for one or some products",
+    "details": {
+        "items": [
+            {
+                "id": "pvsJGjMQVIZSdDWEbh0N",
+                "variantName": "Variante 1",
+                "quantity": 10,
+                "price": 0,
+                "totalPrice": 0,
+                "discountPercentage": 0
+            }
+        ],
+        "totalPrice": 0,
+        "finalPrice": 0,
+        "itemsWidoutStock": [
+            {
+                "id": "pvsJGjMQVIZSdDWEbh0N",
+                "variant": "Variante 1",
+                "requested": 10,
+                "available": 9
+            }
+        ]
+    }
+}
