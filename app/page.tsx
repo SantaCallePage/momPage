@@ -17,7 +17,7 @@ export default async function Home() {
       id: product.id,
       variantName: product.variants[0]?.name || '',
       //quantity: product.variants[0].stock * 100
-      quantity: 1
+      quantity: product.variants[0].stock>0 ? 1:0
     })),
     updatedAt: new Date().toISOString()
   };
@@ -27,6 +27,7 @@ export default async function Home() {
   return (
     <main>
       <h1>Welcome to my app!</h1>
+      <h2>codes: {"Funcionaaaaaa"} </h2>
       <div>
       <strong> Es array: { Array.isArray(simplifiedCart.items) ? "SI" : "NO"}</strong>
         {cart.items? cart.items.map((item: CartItem, index: Key) => (

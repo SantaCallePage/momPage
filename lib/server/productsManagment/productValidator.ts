@@ -62,6 +62,7 @@ export async function validateCart(simplifiedCart:SimplifiedCart):Promise<Cart |
             const availabe = (details.find((i) => i.id === item.id && i.variant === item.variantName) === undefined)
             return {
                 id: item.id,
+                productName: product?.name || "", 
                 variantName: item.variantName,
                 quantity: item.quantity,
                 price: availabe ? (product?.price || 0) : 0,

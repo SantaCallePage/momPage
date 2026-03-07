@@ -1,7 +1,8 @@
 import "server-only";
 import firestore from './firestoreInitializer';
+import firebase from "./firebaseInitializer";
 import { Product,Variant } from "@/models/product";
-import { Cart, CartItem } from "@/models/cart";
+import { Cart, CartItem, CartSimplifiedItem } from "@/models/cart";
 import { CustomerData } from "@/models/customer";
 
 function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData): Product{
@@ -12,7 +13,8 @@ function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData
   
   const rawProduct = data;
 
-        const variants: Variant[] = rawProduct.variants.map((variant: any) => ({
+        const rawVariants = Object.values(rawProduct.variants);
+        const variants: Variant[] = rawVariants.map((variant: any) => ({
               name: variant.name,
               stock: variant.stock,
               imagesUrls: variant.images_urls
@@ -24,7 +26,7 @@ function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData
               description: rawProduct.description,
               price: rawProduct.price,
               category: rawProduct.category,
-              discountPercentage: rawProduct.discount,
+              discountPercentage: rawProduct.discouant,
               variants: variants
           };
 
@@ -35,23 +37,20 @@ function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData
 export async function getProductsById(idList: string[]): Promise<Product[]> {
   if (idList.length === 0) return [];
 
-  // Definimos el tamaño del "chunk" (límite de Firestore)
   const chunkSize = 30;
   const chunks = [];
 
-  // Troceamos el array original (como cortar un salame)
   for (let i = 0; i < idList.length; i += chunkSize) {
     chunks.push(idList.slice(i, i + chunkSize));
   }
 
-  // Ejecutamos todas las peticiones en paralelo para que sea rápido
   const snapshots = await Promise.all(
     chunks.map(chunk => 
       firestore.collection('products').where('__name__', 'in', chunk).get()
     )
   );
 
-  // Aplanamos todos los resultados en una sola lista de productos
+
   return snapshots.flatMap(snap => 
     snap.docs.map(doc => mapFirestoreProduct(doc.id, doc.data()))
   );
@@ -113,6 +112,60 @@ export async function discountProductStock(productId: string, variantName: strin
   return true;
 }
 
+export async function discountProductsStock(items: CartItem[]):Promise<Boolean>{
+  try{
+    const batch = firestore.batch();
+    
+    items.forEach(item =>{
+      const ref = firestore.collection('products').doc(item.id);
+
+      const stockField = `variants.${item.variantName}.stock`
+
+      batch.update(ref,{
+        [stockField] : firebase.firestore.FieldValue.increment(item.quantity * -1)
+      })
+    });
+
+    batch.commit()
+    
+
+  return true;
+  }
+  catch(error){
+    console.log(`Error descontando el stock de los productos ${error}`);
+    throw Error(`${error}`);
+    
+    return false;
+  }
+}
+
+async function getPurchaseCode():Promise<Number>{
+  
+  const confDocRef = firestore.collection("configs").doc("next_purchase_code")
+  let toRet = 0;
+  try {
+    await firestore.runTransaction(async (transaction) => {
+      // 1. LEER PRIMERO
+      const confDoc = await transaction.get(confDocRef);
+
+      // Obtenemos el stock actual (asumiendo que es un number)
+      const data = confDoc.data();
+      const currentCode = data?.code || 0;
+      const newCode = currentCode + 1;
+      toRet = currentCode;
+
+      // 2. ESCRIBIR DESPUÉS
+      transaction.update(confDocRef, { code: newCode });
+    });
+    return toRet;
+    console.log("Transacción completada con éxito.");
+  } catch (error) {
+    console.error("La transacción falló: ", error);
+  }
+  
+  
+  return 0; //Para que TS no joda
+}
 
 export async function uploadPurchase(cart:Cart, customerData:CustomerData, shipping:number){
     const formattedPurchase = {
@@ -131,6 +184,8 @@ export async function uploadPurchase(cart:Cart, customerData:CustomerData, shipp
       "contact_mail":customerData.personalData.contactMail,
       "total_product_shipping":shipping, // Anda a saber cómo mierda obtengo esto (El valor en general, no el parámetro xd)
       "total_purchase":cart.finalPrice,
+      "date":new Date().toLocaleDateString(),
+      "code": await getPurchaseCode(),
       "items":cart.items.map((cartItem:CartItem)=>({
         "product_id":cartItem.id,
         "price":cartItem.price,
