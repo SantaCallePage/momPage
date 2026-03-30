@@ -5,6 +5,7 @@ import { Cart, CartItem,CartSimplifiedItem, SimplifiedCart,ErrorCart } from "@/m
 import { validateCart } from "@/lib/client/cart/cartHandler";
 import { getBaseUrl } from "@/lib/client/url/urlHandler";
 import TemporalButton from "./temporalButton";
+import ProductList from "./components/productList/productLIst";
 //const querySnapshot2 = await fetch('/api/v1/getData?filterName=Nombre&filterValue=Luca');
 
 export const revalidate = 600;
@@ -28,48 +29,53 @@ export default async function Home() {
     <main>
       <h1>Welcome to my app!</h1>
       <h2>codes: {"Funcionaaaaaa"} </h2>
-      <div>
-      <strong> Es array: { Array.isArray(simplifiedCart.items) ? "SI" : "NO"}</strong>
-        {cart.items? cart.items.map((item: CartItem, index: Key) => (
-          <div key={index}>
-            Product ID: {item.id}, Variant Name: {item.variantName}, Quantity: {item.quantity}, Price: {item.price}, Total Price: {item.totalPrice}, Discount Percentage: {item.discountPercentage}%
-          </div>
-        )):'HOLA'}
+      <ProductList products={data} />
+    
+      
+      <details>
+          <div>
+        <strong> Es array: { Array.isArray(simplifiedCart.items) ? "SI" : "NO"}</strong>
+          {cart.items? cart.items.map((item: CartItem, index: Key) => (
+            <div key={index}>
+              Product ID: {item.id}, Variant Name: {item.variantName}, Quantity: {item.quantity}, Price: {item.price}, Total Price: {item.totalPrice}, Discount Percentage: {item.discountPercentage}%
+            </div>
+          )):'HOLA'}
 
-        <div>
-          Hay Productos pedidos sin Stock? 
-          {isError? "SI":"NO"}
+          <div>
+            Hay Productos pedidos sin Stock? 
+            {isError? "SI":"NO"}
+          </div>
+
+          <div>
+            Cart Total Price: {cart.totalPrice}, Cart Final Price: {cart.finalPrice}
+          </div>
         </div>
 
         <div>
-          Cart Total Price: {cart.totalPrice}, Cart Final Price: {cart.finalPrice}
+          {data.map((elem: Product) => (
+            <div key={elem.id}>
+              nombre: <strong>{elem.name}</strong>, descripcion: {elem.description}, precio: {elem.price}, categoria: {elem.category}, descuento: {elem.discountPercentage}%
+              <br />
+              id: {elem.id}
+              <br />
+              Variantes:
+              {elem.variants.map((variant) => (
+                <div key={variant.name}>
+                  {variant.name}, stock: {variant.stock}
+                  <br />
+                  <img
+                    src={variant.imagesUrls[0] ? variant.imagesUrls[0] : '#'}
+                    style={variant.imagesUrls[0] ? { width: '400px' } : {}}
+                    alt=""
+                  />
+                  <button style={{ backgroundColor: '#00ff00', color: '#ffffff' }}>Agregar al carrito</button>
+                </div>
+              ))}
+              
+            </div>
+          ))}
         </div>
-      </div>
-
-      <div>
-        {data.map((elem: Product) => (
-          <div key={elem.id}>
-            nombre: <strong>{elem.name}</strong>, descripcion: {elem.description}, precio: {elem.price}, categoria: {elem.category}, descuento: {elem.discountPercentage}%
-            <br />
-            id: {elem.id}
-            <br />
-            Variantes:
-            {elem.variants.map((variant) => (
-              <div key={variant.name}>
-                {variant.name}, stock: {variant.stock}
-                <br />
-                <img
-                  src={variant.imagesUrls[0] ? variant.imagesUrls[0] : '#'}
-                  style={variant.imagesUrls[0] ? { width: '400px' } : {}}
-                  alt=""
-                />
-                <button style={{ backgroundColor: '#00ff00', color: '#ffffff' }}>Agregar al carrito</button>
-              </div>
-            ))}
-            
-          </div>
-        ))}
-      </div>
+      </details>
       <TemporalButton cart={simplifiedCart} />
     </main>
   );

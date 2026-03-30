@@ -1,0 +1,9 @@
+.products_container{
+  flex-flow: wrap;
+    place-content: space-around space-evenly;
+    display: flex;
+    gap: 1dvw;
+  
+    justify-content: space-between;
+
+}
