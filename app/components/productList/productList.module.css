@@ -1,9 +1,22 @@
 .products_container{
-  flex-flow: wrap;
+ /* flex-flow: wrap;
     place-content: space-around space-evenly;
     display: flex;
     gap: 1dvw;
   
     justify-content: space-between;
+*/
 
+display: grid;
+  /* "Creamos columnas de mínimo 150px y máximo 1fr. 
+     El navegador mete todas las que quepan según el ancho de la pantalla" */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+@media screen and (min-width: 800px) {
+  .products_container{
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
 }

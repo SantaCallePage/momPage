@@ -31,15 +31,17 @@ export default function ProductPreview(prop : ProductPreviewProps){
         }
     },[product])
 
-    useEffect(()=>{
-        if(images.length > 0){
-            setCurrentImageUrl(images[0])
-        }
-    },[images])
 
-    useEffect(()=>{
-        setCurrentImageUrl(images[currentImageIndex])
-    },[currentImageIndex])
+
+   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    // Calculamos qué "página" estamos viendo basándonos en el ancho
+    const newIndex = Math.round(target.scrollLeft / target.offsetWidth);
+    
+     if (newIndex !== currentImageIndex) {
+        setCurrentImageIndex(newIndex)
+  }
+};
 
     return (
         <a href="#" className={` ${styles.main_container} `}>
@@ -52,14 +54,36 @@ export default function ProductPreview(prop : ProductPreviewProps){
                         setCurrentImageIndex(currentImageIndex - 1)
                     }
                 }} > {"<"} </button>
-                {currentImageUrl && (<Image
-                    src={currentImageUrl}
+
+            <div className="relative w-full">
+                <div  onScroll={handleScroll} className={`${styles.images_container}`} >
+
+                 {images.map((url:string,index)=>{
+                    return <Image
+                    key={url} //I'll use the URL as a Key, is this wrong?
+                    src={url}
                     className={` ${styles.image} `}
                     alt="Product image"
                     width={500}
                     height={500}
+                    priority={index == 0}
                     
-                />)}
+                />
+                
+                })  }
+                
+
+            </div>
+            <div className={`${styles.dots_container}`} >
+                    {
+                        images.map((url:string,index)=>{
+                            return <div key={url + index} className={`${styles.dot} ${index == currentImageIndex ? styles.active_dot : ''}`} ></div>
+                        })
+                    }
+                </div>
+            </div>
+
+               
                 <button className={`${styles.image_button}`} onClick={()=>{
                     if(currentImageIndex < images.length-1){
                         setCurrentImageIndex(currentImageIndex + 1)
