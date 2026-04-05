@@ -2,14 +2,14 @@
 
 import { Product } from "@/models/product";
 import ProductPreview from "../productPreview/productPreview";
-import styles from "./productList.module.css"
+import styles from "./productGrid.module.css"
 
 
 interface productListProps{
     products:Product[]
 }
 
-export default function ProductList(prop:productListProps){
+export default function ProductGrid(prop:productListProps){
 
     const products:Product[] = prop.products
 

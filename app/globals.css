@@ -1,16 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #ffffff;
+    --foreground: #171717;
 
-  --product-card-background: #000000;
-  --product-card-buy-button-foreground:#ffffff;
-  --product-card-buy-button-background: #000000;
-  --product-card-name: #000000;
-  --product-card-price: #000000;
-  --product-card-discount-background: #000000;
-  --product-card-discount-foreground: #000000;
+    --product-card-background: #000000;
+    --product-card-buy-button-foreground:#ffffff;
+    --product-card-buy-button-background: #000000;
+    --product-card-name: #000000;
+    --product-card-price: #000000;
+    --product-card-discount-background: #000000;
+    --product-card-discount-foreground: #000000;
+    --product-card-dot-container: #ffffff;
+    --product-card-unactive-dot: #ffffff;
+    --product-card-active-dot: #ffffff;
 }
 
 
@@ -19,13 +22,16 @@
     --background: #ffffff;
     --foreground: #ffffff;
 
-  --product-card-background: #000000;
-  --product-card-buy-button-foreground:#ffffff;
-  --product-card-buy-button-background: #000000;
-  --product-card-name: #000000;
-  --product-card-price: #000000;
-  --product-card-discount-background: #000000; 
-  --product-card-discount-foreground: #000000;
+    --product-card-background: #000000;
+    --product-card-buy-button-foreground:#ffffff;
+    --product-card-buy-button-background: #000000;
+    --product-card-name: #000000;
+    --product-card-price: #000000;
+    --product-card-discount-background: #000000; 
+    --product-card-discount-foreground: #000000;
+    --product-card-dot-container: #000000;
+    --product-card-unactive-dot: #979797;
+    --product-card-active-dot: #ffffff;
   }
 }
 

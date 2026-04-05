@@ -72,7 +72,7 @@ export async function getProductById(productId: string): Promise<Product> {
 }
 
 export async function getCategories() {
-  const snapshot = await firestore.collection('categories').doc('categories').get();
+  const snapshot = await firestore.collection('configs').doc('categories').get();
   if (!snapshot.exists) {
     throw new Error('Categories not found');
   }

@@ -1,0 +1,27 @@
+.products_container{
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+@media screen and (min-width: 860px) {
+  .products_container{
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  html{
+    font-size: 80%;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .products_container{
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+
+  html{
+    font-size: 80%;
+  }
+}

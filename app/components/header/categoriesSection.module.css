@@ -1,0 +1,45 @@
+/* Esto es para que al abrirse tenga una animación smooth */
+details::details-content {
+  transition: all 1s ease, opacity 1s ease;
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+details:not([open])::details-content {
+  block-size: 0;
+  opacity: 0;
+}
+
+details[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+ /* TODO Terminar el fade */
+.fade{
+    position: absolute;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+    height: 30px;
+    width: 100%;
+     backdrop-filter: blur(10px);
+     z-index: 101;
+}
+
+.main_container{
+    position: absolute;
+    z-index: 100;
+   /* background: #ffffff;*/
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.subcategories_container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 30px;
+}
+
+.categories_container{
+    position: relative;
+}

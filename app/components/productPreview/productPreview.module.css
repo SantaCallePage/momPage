@@ -89,13 +89,13 @@
 .dot{
     width: 10px;
     height: 10px;
-    background: #979797;
+    background: var(--product-card-unactive-dot);
     border-radius: 100%;
 }
 
 .active_dot{
     margin: 0;
-    background-color: #ffffff;
+    background-color: var(--product-card-active-dot);
 
 }
 
@@ -106,7 +106,7 @@
     position: absolute;
     bottom: 2;
     left: 50%;
-    background: #000000;
+    background: var(--product-card-dot-container);
     padding: 2px 3px;
     border-radius: 5px;
 }

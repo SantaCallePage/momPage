@@ -5,7 +5,8 @@ import { Cart, CartItem,CartSimplifiedItem, SimplifiedCart,ErrorCart } from "@/m
 import { validateCart } from "@/lib/client/cart/cartHandler";
 import { getBaseUrl } from "@/lib/client/url/urlHandler";
 import TemporalButton from "./temporalButton";
-import ProductList from "./components/productList/productLIst";
+import ProductGrid from "./components/productsContainers/productGrid";
+import Header from "./components/header/header";
 //const querySnapshot2 = await fetch('/api/v1/getData?filterName=Nombre&filterValue=Luca');
 
 export const revalidate = 600;
@@ -29,7 +30,8 @@ export default async function Home() {
     <main>
       <h1>Welcome to my app!</h1>
       <h2>codes: {"Funcionaaaaaa"} </h2>
-      <ProductList products={data} />
+      <Header/>
+      <ProductGrid products={data} />
     
       
       <details>
