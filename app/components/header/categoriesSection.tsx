@@ -1,28 +1,25 @@
+import Link from "next/link"
 import styles from "./categoriesSection.module.css"
 
-import { getAllCategories } from "@/lib/client/categories/categoriesHandler"
-import SubcategoryButton from "./subcategorybutton"
+import { getCategories } from "@/lib/server/firebase/firestoreHandler"
+import { Category } from "@/models/categories"
 
 export default async function CategoriesSection(){
 
-    const categories = await getAllCategories()
+    const categories:Category[] = await getCategories()
 
-    function callback(data:string):void{
-        alert(`La subcategoría ${data} fué clikiada`);
-    }
-
-    console.log(`categorias`)
-    console.table(categories)
+    //console.log(`categorias`)
+    //console.table(categories)
     return (
         <details className={`${styles.main_container}`} >
             <summary>Explorar</summary>
             <div className={`${styles.categories_container}`} >
-                 {categories.map((category:any)=>{
+                 {categories.map((category:Category)=>{
                 return <details key={category.name}>
-                    <summary>{category.name}</summary>
+                    <summary> <Link href={`/?category=${category.name}`}>{category.name}</Link></summary>
                     <div className={`${styles.subcategories_container}`}>
                         {category.subcategories.map((subcategory:any)=>{
-                       return <SubcategoryButton key={subcategory} subcategoryName={subcategory} onSubcategoryClicked={callback} />
+                       return <Link key={subcategory} href={`/?subcategory=${subcategory}`}>{subcategory}</Link>
                     })}
                     </div>
                 </details>

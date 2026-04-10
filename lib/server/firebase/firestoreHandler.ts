@@ -4,6 +4,7 @@ import firebase from "./firebaseInitializer";
 import { Product,Variant } from "@/models/product";
 import { Cart, CartItem, CartSimplifiedItem } from "@/models/cart";
 import { CustomerData } from "@/models/customer";
+import { Category, Subcategory } from "@/models/categories";
 
 function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData): Product{
   
@@ -26,6 +27,7 @@ function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData
               description: rawProduct.description,
               price: rawProduct.price,
               category: rawProduct.category,
+              subcategory: rawProduct.subcategory,
               discountPercentage: rawProduct.discouant,
               variants: variants
           };
@@ -71,15 +73,22 @@ export async function getProductById(productId: string): Promise<Product> {
   return Promise.resolve(mapFirestoreProduct(doc.id, doc.data()));
 }
 
-export async function getCategories() {
+export async function getCategories(): Promise<Category[]> {
   const snapshot = await firestore.collection('configs').doc('categories').get();
   if (!snapshot.exists) {
     throw new Error('Categories not found');
   }
-  return {
-    id: snapshot.id,
-    ...snapshot.data()
-  };
+
+  const data = snapshot.data();
+
+  const toRet = data ? data.categories.map((category:any)=>{
+    return {
+      name:category.name,
+      subcategories:category.subcategories
+    }
+  }) : [] ;
+
+  return toRet
 }
 
 export async function discountProductStock(productId: string, variantName: string, quantity: number): Promise<Boolean> {
@@ -200,7 +209,61 @@ export async function uploadPurchase(cart:Cart, customerData:CustomerData, shipp
     const docRef = await firestore.collection("purchases").add(formattedPurchase);
 }
 
+export async function getProductsBySubcategory(subcategory:string):Promise<Product[]>{
+  return getProductsByProperty('subcategory',subcategory);
+  
+}
 
+export async function getProductsByCategory(category:string,subcategories:string[]):Promise<Product[]>{
+  //const subcategories = await getSubCategories(category);
+
+  const requests = subcategories.map((sub:string) => 
+  firestore.collection('products')
+    .where('subcategory', '==', sub)
+    .limit(4)
+    .get()
+  );
+
+  const snapshots = await Promise.all(requests);
+
+  const filtredProducts = snapshots.map((snapshot)=>snapshot.docs.map(doc=>mapFirestoreProduct(doc.id,doc.data())));
+
+  return filtredProducts.flat();
+  
+}
+
+export async function getFeaturedProducts():Promise<Product[]>{
+  return getProductsByProperty('featured',true);
+  
+}
+
+async function getProductsByProperty(property:string, value:any): Promise<Product[]>{
+   try{
+    const snapshot = await firestore.collection('products').where(property, '==', value).get()
+    
+    const toRet:Product[] = snapshot.docs.map((doc)=>mapFirestoreProduct(doc.id,doc.data()))
+    
+    return toRet;
+  } catch(error) {
+    console.error(`Error on fetch from ${property}`);
+    return [];
+  }
+}
+
+
+export async function getSubCategories(category:string): Promise<string[]>{
+  
+  const categories = await getCategories();
+  var toRet:string[] = [];
+  for(let i:number = 0; i<categories.length; i++){
+    if(categories[i].name === category){
+      toRet = categories[i].subcategories;
+      break;
+    }
+  }
+
+  return toRet;
+}
 
 /*
     En algún momento haré las funciones de userManagement

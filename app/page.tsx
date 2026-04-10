@@ -1,84 +1,61 @@
-import { Key } from "react";
-import { Product,Variant } from "@/models/product";
-import { getAllProducts } from "@/lib/client/productsManagment/productsHandler";
-import { Cart, CartItem,CartSimplifiedItem, SimplifiedCart,ErrorCart } from "@/models/cart";
-import { validateCart } from "@/lib/client/cart/cartHandler";
-import { getBaseUrl } from "@/lib/client/url/urlHandler";
-import TemporalButton from "./temporalButton";
+import { Product } from "@/models/product";
+import { getAllProducts, getFeaturedProducts,getProductsByCategory,getProductsBySubcategory, getSubCategories } from "@/lib/server/firebase/firestoreHandler"
 import ProductGrid from "./components/productsContainers/productGrid";
-import Header from "./components/header/header";
+import ProductsListGrid from "./components/productsContainers/productList";
 //const querySnapshot2 = await fetch('/api/v1/getData?filterName=Nombre&filterValue=Luca');
 
 export const revalidate = 600;
 
-export default async function Home() {
-  const data: Product[] = await getAllProducts();
+export default async function Home({ 
+ searchParams 
+}: { 
+  searchParams: Promise<{ subcategory?: string, category?:string }> 
+}) {
+  //const data: Product[] = await getAllProducts();
+  const data: Product[] = [];
+  //Con esto puedo renderizar la subcategoría seleccionada por el usuario todo en SSR, TODO DO IT XD
+  const { subcategory, category } = await searchParams;
   
-  const simplifiedCart: SimplifiedCart = {
-    items: data.map((product) => ({
-      id: product.id,
-      variantName: product.variants[0]?.name || '',
-      //quantity: product.variants[0].stock * 100
-      quantity: product.variants[0].stock>0 ? 1:0
-    })),
-    updatedAt: new Date().toISOString()
-  };
+  var subcategoryProds:Product[] = [];
+  var subcategories:string[] = [];
+  var categoryProds:Product[] = [];
+  const categoryProdsGrouped = new Map<string,Product[]>();
+  if(category){
+    subcategories = await getSubCategories(category);
+    categoryProds = await getProductsByCategory(category,subcategories);
 
-  const cart = await validateCart(simplifiedCart);
-  const isError = 'itemsWidoutStock' in cart;
+    for (const p of categoryProds){
+      if(!categoryProdsGrouped.has(p.subcategory)){
+        categoryProdsGrouped.set(p.subcategory,[])
+      }
+      categoryProdsGrouped.get(p.subcategory)?.push(p);
+    }
+    
+  } else if (subcategory){
+    subcategoryProds = await getProductsBySubcategory(subcategory);
+  } else{
+    subcategoryProds = await getFeaturedProducts();
+  }
+
+  
+
+
   return (
     <main>
-      <h1>Welcome to my app!</h1>
-      <h2>codes: {"Funcionaaaaaa"} </h2>
-      <Header/>
+      <br/><br/>
+      {(categoryProds.length > 0) ? 
+      subcategories.map((subcategory:string)=>{
+        //const subcategoryProducts = categoryProds.filter((p:Product)=>p.subcategory === subcategory);
+        return <ProductsListGrid key={`${category}+${subcategory}`} 
+        name={subcategory}
+         type="subcategory"
+         products={categoryProdsGrouped.get(subcategory)!} />
+      })
+      :""}
+      { (subcategoryProds.length > 0) ? <ProductGrid products={subcategoryProds}/> : "" }
+
+      <h3>ALL PRODUCTS</h3>
       <ProductGrid products={data} />
-    
-      
-      <details>
-          <div>
-        <strong> Es array: { Array.isArray(simplifiedCart.items) ? "SI" : "NO"}</strong>
-          {cart.items? cart.items.map((item: CartItem, index: Key) => (
-            <div key={index}>
-              Product ID: {item.id}, Variant Name: {item.variantName}, Quantity: {item.quantity}, Price: {item.price}, Total Price: {item.totalPrice}, Discount Percentage: {item.discountPercentage}%
-            </div>
-          )):'HOLA'}
-
-          <div>
-            Hay Productos pedidos sin Stock? 
-            {isError? "SI":"NO"}
-          </div>
-
-          <div>
-            Cart Total Price: {cart.totalPrice}, Cart Final Price: {cart.finalPrice}
-          </div>
-        </div>
-
-        <div>
-          {data.map((elem: Product) => (
-            <div key={elem.id}>
-              nombre: <strong>{elem.name}</strong>, descripcion: {elem.description}, precio: {elem.price}, categoria: {elem.category}, descuento: {elem.discountPercentage}%
-              <br />
-              id: {elem.id}
-              <br />
-              Variantes:
-              {elem.variants.map((variant) => (
-                <div key={variant.name}>
-                  {variant.name}, stock: {variant.stock}
-                  <br />
-                  <img
-                    src={variant.imagesUrls[0] ? variant.imagesUrls[0] : '#'}
-                    style={variant.imagesUrls[0] ? { width: '400px' } : {}}
-                    alt=""
-                  />
-                  <button style={{ backgroundColor: '#00ff00', color: '#ffffff' }}>Agregar al carrito</button>
-                </div>
-              ))}
-              
-            </div>
-          ))}
-        </div>
-      </details>
-      <TemporalButton cart={simplifiedCart} />
     </main>
   );
 }
