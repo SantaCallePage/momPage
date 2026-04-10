@@ -16,10 +16,10 @@ export default async function CategoriesSection(){
             <div className={`${styles.categories_container}`} >
                  {categories.map((category:Category)=>{
                 return <details key={category.name}>
-                    <summary> <Link href={`/?category=${category.name}`}>{category.name}</Link></summary>
+                    <summary> <Link href={`/category/${category.name}`}>{category.name}</Link></summary>
                     <div className={`${styles.subcategories_container}`}>
                         {category.subcategories.map((subcategory:any)=>{
-                       return <Link key={subcategory} href={`/?subcategory=${subcategory}`}>{subcategory}</Link>
+                       return <Link key={subcategory} href={`/subcategory/${subcategory}`}>{subcategory}</Link>
                     })}
                     </div>
                 </details>

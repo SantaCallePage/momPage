@@ -265,6 +265,12 @@ export async function getSubCategories(category:string): Promise<string[]>{
   return toRet;
 }
 
+export async function getAllSubcategories(): Promise<any[]>{
+    const categories = await getCategories();
+    const toRet = categories.map((category)=>{return category.subcategories});
+    return toRet.flat();
+}
+
 /*
     En algún momento haré las funciones de userManagement
  */
