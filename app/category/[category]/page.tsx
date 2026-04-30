@@ -23,7 +23,7 @@ export default async function CategoryPage({
 
     const category = (await params).category;
     const subcategories = await getSubCategories(category);
-    const categoryProds = await getProductsByCategory(category,subcategories);
+    const categoryProds = await getProductsByCategory(category.replaceAll("_"," "),subcategories.map((s)=>s.replaceAll("_"," ")));
     const categoryProdsGrouped = new Map<string,Product[]>();
     for (const p of categoryProds){
       if(!categoryProdsGrouped.has(p.subcategory)){

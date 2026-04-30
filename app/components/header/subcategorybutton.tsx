@@ -8,5 +8,5 @@ interface CategoryButtonProps{
 export default function SubcategoryButton(props:CategoryButtonProps){
     const name = props.subcategoryName;
     
-    return <button onClick={() => props.onSubcategoryClicked(name)}>{name}</button>
+    return <button onClick={() => props.onSubcategoryClicked(name.replaceAll(" ","_"))}>{name}</button>
 }

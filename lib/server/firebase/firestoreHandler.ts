@@ -28,7 +28,7 @@ function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData
               price: rawProduct.price,
               category: rawProduct.category,
               subcategory: rawProduct.subcategory,
-              discountPercentage: rawProduct.discouant,
+              discountPercentage: rawProduct.discount,
               variants: variants
           };
 

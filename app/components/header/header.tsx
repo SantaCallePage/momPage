@@ -5,7 +5,7 @@ export default function Header(){
 
 
     return (
-        <header>
+        <header className="relative">
             <div> <Link href={"/"} >LOGO</Link></div>
             <CategoriesSection/>
         </header>

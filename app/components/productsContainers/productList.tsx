@@ -21,7 +21,7 @@ export default async function ProductsListGrid(props:ListGridProps){
                 return <ProductPreview key={`${product.id}`} product={product} />
             })}
             </div>
-            <Link href={`/?${type}=${name}`}>Ver más</Link>
+            <Link href={`/${type}/${name.replaceAll(" ","_")}`}>Ver más</Link>
         </div>
     );
 }

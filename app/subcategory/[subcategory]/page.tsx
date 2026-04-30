@@ -19,7 +19,7 @@ export default async function CategoryPage({
 }) {
 
     const subcategory = (await params).subcategory;
-  const products = await getProductsBySubcategory(subcategory);
+  const products = await getProductsBySubcategory(subcategory.replaceAll("_"," "));
     const sc = await getAllSubcategories();
 
   return (

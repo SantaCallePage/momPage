@@ -6,56 +6,16 @@ import ProductsListGrid from "./components/productsContainers/productList";
 
 export const revalidate = 600;
 
-export default async function Home({ 
- searchParams 
-}: { 
-  searchParams: Promise<{ subcategory?: string, category?:string }> 
-}) {
-  //const data: Product[] = await getAllProducts();
-  const data: Product[] = [];
-  //Con esto puedo renderizar la subcategoría seleccionada por el usuario todo en SSR, TODO DO IT XD
-  const { subcategory, category } = await searchParams;
+export default async function Home() {
   
-  var subcategoryProds:Product[] = [];
-  var subcategories:string[] = [];
-  var categoryProds:Product[] = [];
-  const categoryProdsGrouped = new Map<string,Product[]>();
-  if(category){
-    subcategories = await getSubCategories(category);
-    categoryProds = await getProductsByCategory(category,subcategories);
-
-    for (const p of categoryProds){
-      if(!categoryProdsGrouped.has(p.subcategory)){
-        categoryProdsGrouped.set(p.subcategory,[])
-      }
-      categoryProdsGrouped.get(p.subcategory)?.push(p);
-    }
-    
-  } else if (subcategory){
-    subcategoryProds = await getProductsBySubcategory(subcategory);
-  } else{
-    subcategoryProds = await getFeaturedProducts();
-  }
-
-  
-
+  //const prods:Product[] = await getAllProducts(); 
+  const prods:Product[] = await getFeaturedProducts();
 
   return (
     <main>
       <br/><br/>
-      {(categoryProds.length > 0) ? 
-      subcategories.map((subcategory:string)=>{
-        //const subcategoryProducts = categoryProds.filter((p:Product)=>p.subcategory === subcategory);
-        return <ProductsListGrid key={`${category}+${subcategory}`} 
-        name={subcategory}
-         type="subcategory"
-         products={categoryProdsGrouped.get(subcategory)!} />
-      })
-      :""}
-      { (subcategoryProds.length > 0) ? <ProductGrid products={subcategoryProds}/> : "" }
+      <ProductGrid products={prods}/>
 
-      <h3>ALL PRODUCTS</h3>
-      <ProductGrid products={data} />
     </main>
   );
 }

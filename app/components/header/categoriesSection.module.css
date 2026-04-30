@@ -42,4 +42,34 @@ details[open]::details-content {
 
 .categories_container{
     position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.ham_menu{
+  display: block;
+}
+
+.desk_menu{
+ display:none;
+}
+
+@media screen and (min-width: 1024px) {
+.ham_menu{
+  display: none;
+}
+
+.fade{
+  display: none;
+}
+
+.desk_menu{
+ display:block;
+}
+
+.categories_container{
+
+  flex-direction: row;
+  gap: 20px;
+}
 }

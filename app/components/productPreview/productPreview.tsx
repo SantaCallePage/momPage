@@ -1,9 +1,11 @@
 "use client"
 
 import { Product, Variant } from "@/models/product"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
+
 import Image from "next/image"
 import styles from "./productPreview.module.css"
+import Link from "next/link"
 
 
 interface ProductPreviewProps{
@@ -13,13 +15,22 @@ interface ProductPreviewProps{
 export default function ProductPreview(prop : ProductPreviewProps){
     const product = prop.product
     
-
-    
-
     const [currentImageUrl,setCurrentImageUrl] = useState<string>("")
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
     const [images,setImages] = useState<string[]>([])
     const [totalStock, setTotalStock] = useState<number>(0)
+
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    function scroll(scroll:number){
+        if (scrollRef.current) {
+      // 2. Aplicamos el movimiento
+      scrollRef.current.scrollBy({
+        left: scroll,
+        behavior: 'smooth' // Esto hace que se deslice suavemente
+      });
+    }
+    }
 
     useEffect(()=>{
         if(product){
@@ -34,66 +45,68 @@ export default function ProductPreview(prop : ProductPreviewProps){
 
 
    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    // Calculamos qué "página" estamos viendo basándonos en el ancho
-    const newIndex = Math.round(target.scrollLeft / target.offsetWidth);
-    
-     if (newIndex !== currentImageIndex) {
-        setCurrentImageIndex(newIndex)
-  }
-};
+        const target = e.currentTarget;
+        // Calculamos qué "página" estamos viendo basándonos en el ancho
+        const newIndex = Math.round(target.scrollLeft / target.offsetWidth);
+        
+        if (newIndex !== currentImageIndex) {
+            setCurrentImageIndex(newIndex)
+        }
+    };
 
     return (
-        <a href="#" className={` ${styles.main_container} `}>
+        <Link href={`/product/${product.id}`} className={` ${styles.main_container} `}>
 
             
 
             <div className={` ${styles.image_and_buttons_container} `} > 
-                <button className={`${styles.image_button}`} onClick={()=>{
-                    if(currentImageIndex > 0){
-                        setCurrentImageIndex(currentImageIndex - 1)
-                    }
+                <button className={`${styles.image_button}`} onClick={(e)=>{
+                    e.preventDefault(); // Evita que el Link intente navegar
+                    e.stopPropagation(); // Evita que el clic "suba" al Link
+                    scroll(-100)
                 }} > {"<"} </button>
 
-            <div className="relative w-full">
-                <div  onScroll={handleScroll} className={`${styles.images_container}`} >
+                <div className="relative w-full">
+                    <div ref={scrollRef} onScroll={handleScroll} className={`${styles.images_container}`} >
 
-                 {images.map((url:string,index)=>{
-                    return <Image
-                    key={url} //I'll use the URL as a Key, is this wrong?
-                    src={url}
-                    className={` ${styles.image} `}
-                    alt="Product image"
-                    width={500}
-                    height={500}
-                    priority={index == 0}
+                    {images.map((url:string,index)=>{
+                        return <Image
+                        key={url} //I'll use the URL as a Key, is this wrong?
+                        src={url}
+                        className={` ${styles.image} `}
+                        alt="Product image"
+                        width={500}
+                        height={500}
+                        priority={index == 0}
+                        
+                    />
                     
-                />
-                
-                })  }
-                
-
-            </div>
-            <div className={`${styles.dots_container}`} >
-                    {
-                        images.map((url:string,index)=>{
-                            return <div key={url + index} className={`${styles.dot} ${index == currentImageIndex ? styles.active_dot : ''}`} ></div>
-                        })
-                    }
+                    })  }
+                    
+                        <div className={`${styles.dots_container}`} >
+                            {
+                                images.map((url:string,index)=>{
+                                    return <div key={url + index} className={`${styles.dot} ${index == currentImageIndex ? styles.active_dot : ''}`} ></div>
+                                })
+                            }
+                        
+                         </div>
+                    
+                    </div>
                 </div>
-            </div>
+                
 
                
-                <button className={`${styles.image_button}`} onClick={()=>{
-                    if(currentImageIndex < images.length-1){
-                        setCurrentImageIndex(currentImageIndex + 1)
-                    }
+                <button className={`${styles.image_button}`} onClick={(e)=>{
+                    e.preventDefault(); // Evita que el Link intente navegar
+                    e.stopPropagation(); // Evita que el clic "suba" al Link
+                    scroll(100)
                 }} > {">"} </button>
             </div>
                 <h5 className={`${styles.name}`} > <b> {product.name} </b> </h5>
                 <p className={`${styles.price}`} >  <b> ${product.price} </b> </p>
             <button className={`${styles.buy_button}`} disabled={totalStock === 0 ? true : false} onClick={()=>{console.log("Listo, son $1000000000000 Dolares")}} >Agregar al carrito {}</button>
 
-        </a>
+        </Link>
     )
 }
