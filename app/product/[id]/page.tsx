@@ -5,14 +5,14 @@ import ProductView from "@/app/components/productView/productView";
 
 export const revalidate = 600;
 
-//Not for now
-/*export async function generateStaticParams() {
+
+export async function generateStaticParams() {
   const subcategories = await getAllSubcategories();
 
   return subcategories.map((sub: string) => ({
     subcategory: sub,
   }));
-}>*/
+}
 
 export default async function CategoryPage({
   params,

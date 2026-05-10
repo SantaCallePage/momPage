@@ -1,6 +1,4 @@
 import { discountProductsStock,uploadPurchase } from "@/lib/server/firebase/firestoreHandler";
-import { Cart,CartItem, CartSimplifiedItem,SimplifiedCart } from "@/models/cart";
-import { CustomerData,Address,PersonalData } from "@/models/customer";
 import { validateCart } from "@/lib/server/productsManagment/productValidator";
 import { NextResponse } from "next/server";
 import { getShipping } from "@/lib/server/shipping.ts/correoArgentinoAPIClient";

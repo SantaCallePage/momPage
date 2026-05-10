@@ -1,7 +1,7 @@
 "use client"
 
 import { Product, Variant } from "@/models/product"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
 
 import Image from "next/image"
 import styles from "./productPreview.module.css"
@@ -13,14 +13,17 @@ interface ProductPreviewProps{
 }
 
 export default function ProductPreview(prop : ProductPreviewProps){
-    const product = prop.product
+    const [product,_] = useState(prop.product);
     
-    const [currentImageUrl,setCurrentImageUrl] = useState<string>("")
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
-    const [images,setImages] = useState<string[]>([])
-    const [totalStock, setTotalStock] = useState<number>(0)
-
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    const {images, totalStock} = useMemo(()=>{
+        const tempImages = product.variants.map((variant:Variant)=>variant.imagesUrls[0])
+        
+        const stock = product.variants.reduce((acumulator,currentVariant:Variant)=>{ return acumulator + currentVariant.stock},0);
+        return {images:tempImages, totalStock: stock};
+    },[product]);
 
     function scroll(scroll:number){
         if (scrollRef.current) {
@@ -31,18 +34,6 @@ export default function ProductPreview(prop : ProductPreviewProps){
       });
     }
     }
-
-    useEffect(()=>{
-        if(product){
-            const tempImages = product.variants.map((variant:Variant)=>variant.imagesUrls[0])
-            setImages(tempImages)
-            const stock = product.variants.reduce((acumulator,currentVariant:Variant)=>{ return acumulator + currentVariant.stock},0)
-            setTotalStock(stock)
-
-        }
-    },[product])
-
-
 
    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
         const target = e.currentTarget;

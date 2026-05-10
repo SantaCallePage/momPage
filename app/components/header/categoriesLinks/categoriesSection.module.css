@@ -25,7 +25,7 @@ details[open]::details-content {
 }
 
 .main_container{
-    position: absolute;
+   
     z-index: 100;
    /* background: #ffffff;*/
     width: 100%;

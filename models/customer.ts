@@ -5,10 +5,10 @@ export interface CustomerData{
 
 export interface Address{
     "locality":string,
-    "number":number,
+    "number":string,
     "province":string,
     "street":string,
-    "zipCode":number,
+    "zipCode":string,
     "apt"?:string,
     "floor"?:string,
     "additional"?:string
