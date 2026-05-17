@@ -1,4 +1,4 @@
-import { getAllSubcategories, getProductById, getProductsBySubcategory } from "@/lib/server/firebase/firestoreHandler";
+import { getAllProducts, getAllSubcategories, getProductById, getProductsBySubcategory } from "@/lib/server/firebase/firestoreHandler";
 import ProductGrid from "@/app/components/productsContainers/productGrid";
 import { Product } from "@/models/product";
 import ProductView from "@/app/components/productView/productView";
@@ -7,10 +7,10 @@ export const revalidate = 600;
 
 
 export async function generateStaticParams() {
-  const subcategories = await getAllSubcategories();
+  const products = await getAllProducts();
 
-  return subcategories.map((sub: string) => ({
-    subcategory: sub,
+  return products.map((prod:Product) => ({
+    id:prod.id
   }));
 }
 

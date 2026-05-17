@@ -1,0 +1,17 @@
+.main_container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.main_container h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: #111;
+    text-align: left;
+    letter-spacing: -1px;
+    /* Una línea sutil abajo para dar estructura */
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+}

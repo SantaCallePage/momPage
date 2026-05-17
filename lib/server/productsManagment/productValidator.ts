@@ -2,7 +2,7 @@ import "server-only";
 import { Product } from "@/models/product";
 import { Cart, CartItem, CartSimplifiedItem, ErrorCart, SimplifiedCart } from "@/models/cart"; // Usaremos este para el input
 import { getProductsById } from "../firebase/firestoreHandler";
-import { error } from "console";
+import { ProductNotFoundError } from "../errors";
 
 interface ValidatedProducts {
     isStockAvailable: boolean;
@@ -31,7 +31,7 @@ export async function validateProductsStock(cartItems: CartSimplifiedItem[]): Pr
         const dbProduct = productsMap.get(item.id);
         
         if (!dbProduct) {
-            throw new Error(`Producto ${item.id} no existe en la base de datos`);
+            throw new ProductNotFoundError(item.id);
         }
 
         // Buscamos la variante específica (ej: "Rojo - L")
@@ -66,7 +66,7 @@ export async function validateCart(simplifiedCart:SimplifiedCart):Promise<Cart |
                 variantName: item.variantName,
                 quantity: item.quantity,
                 price: availabe ? (product?.price || 0) : 0,
-                totalPrice: availabe ? ((product?.price || 0) * item.quantity) : 0,
+                totalPrice: availabe&&product ? ((product?.price * (1 - product?.discountPercentage/100)|| 0) * item.quantity) : 0,
                 discountPercentage: availabe ? (product?.discountPercentage || 0) : 0
             };
         });
@@ -75,8 +75,8 @@ export async function validateCart(simplifiedCart:SimplifiedCart):Promise<Cart |
     
         const cart = {
             items: itemsDetailed,
-            totalPrice: itemsDetailed.reduce((acc, item) =>  acc + item.totalPrice, 0),
-            finalPrice: itemsDetailed.reduce((acc, item) => acc + item.totalPrice * (1 - item.discountPercentage / 100), 0),
+            totalPrice: itemsDetailed.reduce((acc, item) =>  acc + item.price, 0),
+            finalPrice: itemsDetailed.reduce((acc, item) => acc + item.price * (1 - item.discountPercentage / 100), 0),
         }
     
         if (!isStockAvailable) {

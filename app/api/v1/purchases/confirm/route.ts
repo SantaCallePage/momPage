@@ -2,8 +2,9 @@ import { discountProductsStock,uploadPurchase } from "@/lib/server/firebase/fire
 import { validateCart } from "@/lib/server/productsManagment/productValidator";
 import { NextResponse } from "next/server";
 import { getShipping } from "@/lib/server/shipping.ts/correoArgentinoAPIClient";
+import { ProductNotFoundError } from "@/lib/server/errors";
 
-export async function POST(request: Request):Promise<Response> {
+export async function POST(request: Request):Promise<NextResponse> {
     const { simplifiedCart: SimplifiedCart, customerData: CustomerData } = await request.json();
 
     console.log('SimplifiedCart',SimplifiedCart)
@@ -26,12 +27,18 @@ export async function POST(request: Request):Promise<Response> {
         //Hagamos de cuenta que acá obtengo el envío
         const shipping:number = await getShipping(); //Esto devuelve 0
         
+        // For Debugging reazons Ill disabled this 
         await uploadPurchase(cart,CustomerData,shipping);
 
-        return new Response('Purchase confirmed', { status: 200 });
+        return NextResponse.json({message:'Purchase confirmed'}, { status: 201 });
 
     } catch (error) {
+
+        if (error instanceof ProductNotFoundError){
+            return NextResponse.json({error: 'Product not Found', details: `${error}`}, { status: 404 });
+        }
+
         console.error('Error confirming purchase:', error);
-        return new Response('Error confirming purchase', { status: 500 });
+        return NextResponse.json({error: 'Error confirming purchase', details: `${error}`}, { status: 500 });
     }
 }

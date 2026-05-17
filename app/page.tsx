@@ -13,7 +13,6 @@ export default async function Home() {
 
   return (
     <main>
-      <br/><br/>
       <ProductGrid products={prods}/>
 
     </main>

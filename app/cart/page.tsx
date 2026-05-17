@@ -31,27 +31,40 @@ export default function CartSection(){
     }, [simpliedCart]);
 
     return(
-        <main>
-            <div className={`${styles.main_container}`}>
-                <AnimatePresence>
-                    {(cart != null && cart.items.length > 0) ? 
-                    
-                    cart.items.map((item:CartItem)=>{return <CartItemView key={item.id + item.variantName} item={item} />}) 
-                    
-                    : <span>No hay productos para mostrar</span>}
-            
-                </AnimatePresence>
-                </div>
+        <main className={styles.main_container}>
+    <div>
+        <AnimatePresence>
+            {(cart != null && cart.items.length > 0) ? 
+                cart.items.map((item) => <CartItemView key={item.id + item.variantName} item={item} />) 
+                : <span className={styles.empty_cart_msg}>No hay productos para mostrar</span>
+            }
+        </AnimatePresence>
+    </div>
 
-                <div>
-                    { cart != null && cart.items.length>0 ? <div>
-                        Total productos:{cart?.totalPrice} 
-                        Descuento {cart.totalPrice - cart.finalPrice}
-                        Total a pagar:{cart?.finalPrice}
-                        <Link href={"/buy"}>Continuar compra</Link>
-                    </div>  :""}
-                   
+    {cart != null && cart.items.length > 0 && (
+        <div className={styles.summary_container}>
+            <div className={styles.summary_row}>
+                <span>Total productos:</span>
+                <span>${cart.totalPrice}</span>
+            </div>
+            
+            {cart.totalPrice > cart.finalPrice && (
+                <div className={styles.summary_row}>
+                    <span>Descuento:</span>
+                    <span className={styles.discount_text}>-${cart.totalPrice - cart.finalPrice}</span>
                 </div>
-        </main>
+            )}
+
+            <div className={styles.total_row}>
+                <span>Total a pagar:</span>
+                <span>${cart.finalPrice}</span>
+            </div>
+
+            <Link href={"/buy"} className={styles.buy_button}>
+                Continuar compra
+            </Link>
+        </div>
+    )}
+</main>
     );
 }

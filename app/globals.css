@@ -64,8 +64,13 @@ body {
   color: #000000;
 }
 
+:root{
+    interpolate-size: allow-keywords;
+}
+
 html {
   font-size: 62.5%;
+
 }
 
 span{

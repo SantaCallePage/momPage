@@ -13,3 +13,26 @@
 .bottom_section{
     position: relative;
 }
+
+.cart_icon{
+    margin: 0;
+}
+
+.intems_quantity{
+    position: absolute;
+    background: #ff6600;
+    border-radius: 100%;
+    font-size: 1.4rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    text-align: center;
+    right: 0;
+    top: 0;
+    line-height: 1.2;
+    padding: 0;
+}
+
+.cart_section{
+   position: relative;
+   padding-top: 1rem;
+}

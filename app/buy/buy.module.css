@@ -1,0 +1,123 @@
+.main_container {
+  margin: 0;
+}
+
+.form{
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+}
+
+.data_section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+}
+
+/* Títulos de secciones (Personal, Dirección) */
+.data_section > span {
+    display: block;
+    font-weight: 600;
+    font-size: 1.9rem;
+    margin: 1.5rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Grillas para los campos */
+.personal_data, .direction {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Contenedor de cada input + error */
+.personal_data > div, .direction > div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* El input base */
+.input {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1.7rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input:focus {
+    border-color: #0070f3;
+    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+}
+
+/* Estado de Error */
+.error_input {
+    border-color: #ff4d4f !important;
+    background-color: #fff2f0;
+}
+
+.error_input:focus {
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* Texto del error */
+.personal_data div span, .direction div span {
+    color: #ff4d4f;
+    font-size: 1.3rem;
+    margin-top: 0.4rem;
+    min-height: 1rem; /* Evita que el layout salte cuando aparece el error */
+}
+
+/* El Botón de Enviar */
+.data_section button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    margin-top: 2rem;
+}
+
+.data_section button:hover {
+    background-color: #0056b3;
+}
+
+.data_section button:active {
+    transform: scale(0.98);
+}
+
+/* Respuesta del Servidor */
+.main_container > span {
+    display: block;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-weight: 500;
+    color: #28a745; /* Verde éxito */
+}
+
+/* Responsive para celulares muy chicos */
+@media (max-width: 480px) {
+    .main_container {
+        padding: 1rem;
+    }
+    .data_section {
+        padding: 1.5rem;
+    }
+}

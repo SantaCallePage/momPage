@@ -1,27 +1,58 @@
-.products_container{
-
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem;
+/* Contenedor de la sección (Subcategoría) */
+.subcategory_section {
+    margin-bottom: 4rem;
+    padding: 0 1rem;
 }
 
-@media screen and (min-width: 860px) {
-  .products_container{
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
+.subcategory_section h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: #111;
+    text-align: left;
+    letter-spacing: -1px;
+    /* Una línea sutil abajo para dar estructura */
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+}
 
-  html{
-    font-size: 80%;
-  }
+.products_container {
+    display: grid;
+    /* Bajamos un poco el max de 400px a 320px para que no queden 2 productos gigantes */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Link de "Ver más" estilizado como botón fantasma */
+.view_more_link {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border: 2px solid #0070f3;
+    color: #0070f3;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.view_more_link:hover {
+    background-color: #0070f3;
+    color: #fff;
+}
+
+/* Media Queries Refinados */
+@media screen and (min-width: 860px) {
+    .products_container {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
 }
 
 @media screen and (min-width: 1300px) {
-  .products_container{
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  }
-
-  html{
-    font-size: 80%;
-  }
+    .products_container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

@@ -3,6 +3,7 @@ import ProductGrid from "@/app/components/productsContainers/productGrid";
 import { Category } from "@/models/categories";
 import { Product } from "@/models/product";
 import ProductsListGrid from "@/app/components/productsContainers/productList";
+import { capitalizeAllSentence } from "@/lib/client/generalServices/generalServices";
 
 export const revalidate = 600;
 
@@ -34,7 +35,7 @@ export default async function CategoryPage({
 
   return (
     <main>
-      <h2>{category}</h2>
+      <h2>{ capitalizeAllSentence(category)}</h2>
       {subcategories.map((subcategory:string)=>{
               //const subcategoryProducts = categoryProds.filter((p:Product)=>p.subcategory === subcategory);
               return <ProductsListGrid key={`${category}+${subcategory}`} 

@@ -48,6 +48,21 @@ details[open]::details-content {
 
 .ham_menu{
   display: block;
+  transition: height 1s ease, content-visibility 1s allow-discrete;
+}
+
+.details::details-content {
+  height: 0;
+  overflow: clip;
+  transition: height 1s ease, content-visibility 1s allow-discrete;
+}
+
+.details{
+  margin: 0;
+}
+
+.details[open]::details-content {
+  height: auto;
 }
 
 .desk_menu{
