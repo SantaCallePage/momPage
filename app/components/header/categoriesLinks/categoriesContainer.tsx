@@ -3,27 +3,27 @@ import { Category } from "@/models/categories"
 import styles from "./categoriesSection.module.css"
 import Link from "next/link";
 import { capitalizeAllSentence } from "@/lib/client/generalServices/generalServices";
-
+import { ArrowUpRight } from "lucide-react";
+import DropDownDetails from "./dropDownDetails";
 
 interface CategoriesContainerProps {
     categories: Category[];
-    addToRef(el:HTMLDetailsElement | null):void
+    isAbsolute:boolean
 }
 
-export default function CategoriesContainer({categories, addToRef}: CategoriesContainerProps) {
+export default function CategoriesContainer({categories, isAbsolute}: CategoriesContainerProps) {
    
 
     return (
         <div className={`${styles.categories_container}`} >
             {categories.map((category: Category) => {
-                return <details className={`${styles.details}`} ref={(el) => { addToRef(el) }} key={category.name}>
-                    <summary> <Link href={`/category/${category.name.replaceAll(" ", "_")}`}>{ capitalizeAllSentence(category.name)}</Link></summary>
+                return <DropDownDetails key={category.name} isAbsolute={isAbsolute} summaryHref={`/category/${category.name.replaceAll(" ", "_")}`}  summaryText={capitalizeAllSentence(category.name)} >
                     <div className={`${styles.subcategories_container}`}>
                         {category.subcategories.map((subcategory: any) => {
-                            return <Link key={subcategory} href={`/subcategory/${subcategory.replaceAll(" ", "_")}`}>{capitalizeAllSentence(subcategory)}</Link>
+                            return <Link className={`${styles.link}`} key={subcategory} href={`/subcategory/${subcategory.replaceAll(" ", "_")}`}><span>{capitalizeAllSentence(subcategory)}</span> <ArrowUpRight/> </Link>
                         })}
                     </div>
-                </details>
+                </DropDownDetails>
             })}
         </div>
     )

@@ -2,7 +2,7 @@
 
 :root {
     --background: #ffffff;
-    --foreground: #171717;
+    --foreground: #ffffff;
 
     --product-card-background: #000000;
     --product-card-buy-button-foreground:#ffffff;
@@ -11,10 +11,11 @@
     --product-card-buy-button-background_disabled: #5f5f5f;
     --product-card-name: #000000;
     --product-card-price: #000000;
+
     --product-card-discount-background: #000000;
     --product-card-discount-foreground: #000000;
-    --product-card-dot-container: #ffffff;
-    --product-card-unactive-dot: #ffffff;
+    --product-card-dot-container: #000000;
+    --product-card-unactive-dot: #979797;
     --product-card-active-dot: #ffffff;
 
     --product_view_variant_name_bg: #ffffff;
@@ -24,6 +25,13 @@
     --product_view_variant_name_bg_disabled: #ffffff;
     --product_view_variant_name_border_disabled: #5f5f5f;
     --product_view_variant_name_foreground_disabled: #5f5f5f;
+
+    --hero-foreground: #1a1a1a;
+    --hero-muted-foreground: #666666;
+    --hero-primary: #0070f3;
+    --hero-primary-foreground: #ffffff;
+    --hero-border: #e2e8f0;
+    --hero-secondary-hover: #f7fafc;
 }
 
 
@@ -53,6 +61,13 @@
     --product_view_variant_name_bg_disabled: #ffffff;
     --product_view_variant_name_border_disabled: #5f5f5f;
     --product_view_variant_name_foreground_disabled: #5f5f5f;
+
+    --hero-foreground: #1a1a1a;
+    --hero-muted-foreground: #666666;
+    --hero-primary: #0070f3;
+    --hero-primary-foreground: #ffffff;
+    --hero-border: #e2e8f0;
+    --hero-secondary-hover: #f7fafc;
   }
 }
 
@@ -77,13 +92,6 @@ span{
   cursor: default;
 }
 
-summary::after{
-  content: "   v";
-}
-
-details[open] > summary::after{
-  content: "   <";
-}
 
 /* Para Chrome, Edge y Safari */
 summary::-webkit-details-marker {
@@ -93,4 +101,16 @@ summary::-webkit-details-marker {
 /* Para Firefox y estándar moderno */
 summary {
   list-style: none;
+}
+
+details:active{
+  border: 0;
+  outline: 0;
+}
+
+@media screen and (min-width: 860px) {
+
+  html {
+      font-size: 80%;
+  }
 }

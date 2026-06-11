@@ -25,7 +25,7 @@ export default async function CategoryPage({
 
   return (
     <main>
-      
+
       <ProductView product={productData} />
     </main>
   );

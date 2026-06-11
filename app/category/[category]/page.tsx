@@ -4,6 +4,9 @@ import { Category } from "@/models/categories";
 import { Product } from "@/models/product";
 import ProductsListGrid from "@/app/components/productsContainers/productList";
 import { capitalizeAllSentence } from "@/lib/client/generalServices/generalServices";
+import { img, span } from "motion/react-client";
+import imagenGordoToni from "@/public/gordoToni.jpg"
+import Image from "next/image";
 
 export const revalidate = 600;
 
@@ -32,16 +35,22 @@ export default async function CategoryPage({
       }
       categoryProdsGrouped.get(p.subcategory)?.push(p);
     }
+    subcategories.map((s)=>{
+      console.log(s);
+      console.log(`s: ${s == undefined}; cpg: ${categoryProdsGrouped.get(s) == undefined}`)
+    })
 
   return (
     <main>
       <h2>{ capitalizeAllSentence(category)}</h2>
+      
       {subcategories.map((subcategory:string)=>{
               //const subcategoryProducts = categoryProds.filter((p:Product)=>p.subcategory === subcategory);
-              return <ProductsListGrid key={`${category}+${subcategory}`} 
+
+              return categoryProdsGrouped.get(subcategory) != undefined ? <ProductsListGrid key={`${category}+${subcategory}`} 
               name={subcategory}
                type="subcategory"
-               products={categoryProdsGrouped.get(subcategory)!} />
+               products={categoryProdsGrouped.get(subcategory)!} /> : <Image src={imagenGordoToni} key={`${category}+${subcategory}`} alt="" />
             })}
     </main>
   );

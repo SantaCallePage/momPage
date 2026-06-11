@@ -73,7 +73,7 @@ export default function Buy() {
     }
 
     async function handleSubmit() {
-       /* let isError = false;
+        let isError = false;
         for (let key of Object.keys(data)) {
             if (key == "apt" || key == "floor" || key == "aditional") {
                 continue;
@@ -109,8 +109,8 @@ export default function Buy() {
             additional: data.additional
         }
 
-        setResponse(await confirmPurchase(simpliedCart, { personalData: personalData, address: addressData }));*/
-        setResponse({error:false, message:""})
+        setResponse(await confirmPurchase(simpliedCart, { personalData: personalData, address: addressData }));
+       
 
 
     }

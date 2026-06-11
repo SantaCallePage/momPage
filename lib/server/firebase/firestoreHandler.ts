@@ -228,7 +228,7 @@ export async function getProductsByCategory(category:string,subcategories:string
 
   const filtredProducts = snapshots.map((snapshot)=>snapshot.docs.map(doc=>mapFirestoreProduct(doc.id,doc.data())));
 
-  return filtredProducts.flat();
+  return filtredProducts != undefined ? filtredProducts.flat() : [];
   
 }
 
