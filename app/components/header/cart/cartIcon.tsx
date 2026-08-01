@@ -8,7 +8,9 @@ export default function CartIcon(){
     const {simpliedCart} = useCart();
     return(
         <div className={styles.cart_section}>
-            <span className={`${ simpliedCart && simpliedCart.items.length ? styles.intems_quantity : "hidden"}`} >{simpliedCart && simpliedCart.items.length ? simpliedCart.items.length:""}</span>
+            <span className={`${ simpliedCart && simpliedCart.items.length ? styles.intems_quantity : "hidden"}`} >
+                {simpliedCart && simpliedCart.items.length ? simpliedCart.items.reduce((acc,i)=>acc + i.quantity,0):""}
+            </span>
             <Link href={"/cart"}> <ShoppingCartIcon color="black" size={"2em"} /> </Link>
         </div>
         

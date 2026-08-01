@@ -1,10 +1,12 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "../contexts/cartContext";
-import { Address, CustomerData, PersonalData } from "@/models/customer";
+import { CustomerData, PersonalData } from "@/models/customer";
 import { confirmPurchase, ResponseConfirm } from "@/lib/client/cart/cartHandler";
 import { dir_fields, getErrorText, personal_data_fields } from "@/lib/client/purchase/purchaseServices";
 import styles from "./buy.module.css"
+import Success from "./success"
+import { ShippingData, Address } from "@/models/shipping";
 
 interface dataType {
     "name": string,
@@ -39,13 +41,10 @@ export default function Buy() {
 
 
 
-    const personal_data_placeholders = ["Nombre", "Número de contacto", "Mail"];
+    const personal_data_placeholders = ["Nombre y Apellido", "Número de Celular", "Mail"];
     const dir_placeholders = ["Calle", "Número", "Ciudad", "Provincia", "Código Postal", "Piso (Opcional)", "Departamento (Opcional)", "Información adicional (Opcional)"];
 
     const [response, setResponse] = useState<ResponseConfirm | undefined>(undefined);
-
-
-
 
     function addToData(name: string, value: string) {
         if (errors[name]) {
@@ -53,8 +52,6 @@ export default function Buy() {
         }
         setData({ ...data, [name]: value });
     }
-    //Una vez termine este componente, esta función la voy a mudar a una clase de servicio
-
 
     function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
         const { name, value } = e.target;
@@ -103,13 +100,19 @@ export default function Buy() {
             number: data.number,
             province: data.province,
             street: data.street,
-            zipCode: data.zipCode,
             apt: data.apt,
             floor: data.floor,
-            additional: data.additional
+            aditional: data.additional
         }
 
-        setResponse(await confirmPurchase(simpliedCart, { personalData: personalData, address: addressData }));
+        const shippingData: ShippingData = {
+            zipCode: data.zipCode,
+            type:"d",
+            address:addressData
+
+        }
+
+        setResponse(await confirmPurchase(simpliedCart,  personalData, shippingData ));
        
 
 
@@ -149,7 +152,7 @@ export default function Buy() {
                                 <span>{errors[name] ? errors[name] : ""}</span>
                             </div>)}
                     </div>
-                    <span>Dirección</span>
+                    <span>Dirección de Entrega</span>
                     <div className={`${styles.direction}`}>
 
                         {dir_fields.map((name, i) =>
@@ -166,18 +169,13 @@ export default function Buy() {
                                 <span>{errors[name] ? errors[name] : ""}</span>
                             </div>)}
                     </div>
-                    <button  onClick={handleSubmit} >Enviar</button>
+                    <button  onClick={handleSubmit} >Finalizar Compra</button>
                 </div>
             </div> :""}
 
             <div>
-                {response && !response.error ? 
-                <div>Compra concretada, para pagar, transferí el monto al alias: inserte.alias {"<botón para copiar>"}. <br />
-                 datos de la cuenta titular: Mi mami. Enviá el comprobante al número <a href="https://wa.me/542923464460">2923 464460</a></div> 
-                : ""}
+               { response ? <Success response={response} /> : ""}
             </div>
-
-            <span>{response ? `Respuesta del servidor: ${response.message}` : ""}</span>
         </main>
     );
 }

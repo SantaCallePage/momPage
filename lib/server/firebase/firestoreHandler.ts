@@ -5,6 +5,8 @@ import { Product,Variant } from "@/models/product";
 import { Cart, CartItem, CartSimplifiedItem } from "@/models/cart";
 import { CustomerData } from "@/models/customer";
 import { Category, Subcategory } from "@/models/categories";
+import { ShippingData } from "@/models/shipping";
+import { PersonalData } from "@/models/shipping";
 
 function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData): Product{
   
@@ -29,7 +31,9 @@ function mapFirestoreProduct(prodId:string, data?:FirebaseFirestore.DocumentData
               category: rawProduct.category,
               subcategory: rawProduct.subcategory,
               discountPercentage: rawProduct.discount,
-              variants: variants
+              variants: variants,
+              featured: rawProduct.featured,
+              new: rawProduct.new
           };
 
       return prod;
@@ -176,37 +180,64 @@ async function getPurchaseCode():Promise<Number>{
   return 0; //Para que TS no joda
 }
 
-export async function uploadPurchase(cart:Cart, customerData:CustomerData, shipping:number){
-    const formattedPurchase = {
-      "address":{
-        "locality":customerData.address.locality,
-        "number":customerData.address.number,
-        "province":customerData.address.province,
-        "street":customerData.address.street,
-        "zip_code":customerData.address.zipCode,
-        ...(customerData.address.apt && {"apt":customerData.address.apt}),
-        ...(customerData.address.floor && {"floor":customerData.address.floor}),
-        ...(customerData.address.additional && {"aditional":customerData.address.additional})
-      },
-      "customer_name":customerData.personalData.name,
-      "contact_number":customerData.personalData.contactNumber,
-      "contact_mail":customerData.personalData.contactMail,
-      "total_product_shipping":shipping, // Anda a saber cómo mierda obtengo esto (El valor en general, no el parámetro xd)
-      "total_purchase":cart.finalPrice,
-      "date":new Date().toLocaleDateString(),
-      "code": await getPurchaseCode(),
-      "items":cart.items.map((cartItem:CartItem)=>({
-        "product_id":cartItem.id,
-        "price":cartItem.price,
-        "discount":cartItem.discountPercentage,
-        "total":cartItem.totalPrice,
-        "quantity":cartItem.quantity,
-        "product":cartItem.productName,
-        "variant":cartItem.variantName
-      }))
-    };
+export async function uploadPurchase(
+  cart: Cart,
+  personalData: PersonalData,
+  shippingData: ShippingData,
+  shipping: number
+) {
+  // 1. Mapeo de items
+  const items = cart.items.map((cartItem: CartItem) => ({
+    product_id: cartItem.id,
+    product: cartItem.productName,
+    quantity: cartItem.quantity,
+    price: cartItem.price,
+    discount: cartItem.discountPercentage,
+    total: cartItem.totalPrice,
+    variant: cartItem.variantName,
+  }));
 
-    const docRef = await firestore.collection("purchases").add(formattedPurchase);
+  // 2. Mapeo de la estructura de envío (Maneja Domicilio o Sucursal)
+  const formattedShippingData = {
+    zip_code: shippingData.zipCode,
+    type:shippingData.type,
+    ...(shippingData.address && {
+      address: {
+        street: shippingData.address.street,
+        number: shippingData.address.number,
+        locality: shippingData.address.locality,
+        province: shippingData.address.province,
+        ...(shippingData.address.apt && { apt: shippingData.address.apt }),
+        ...(shippingData.address.floor && { floor: shippingData.address.floor }),
+        ...(shippingData.address.aditional && { aditional: shippingData.address.aditional }),
+      },
+    }),
+    ...(shippingData.sucursalData && {
+      sucursal_data: {
+        sucursal_id: shippingData.sucursalData.sucursalId,
+        address: shippingData.sucursalData.address,
+        name: shippingData.sucursalData.name,
+      },
+    }),
+  };
+
+  // 3. Payload final respetando snake_case para Firestore
+  const formattedPurchase = {
+    code: await getPurchaseCode(),
+    date: new Date().toLocaleDateString(), // Es recomendable usar ISO8601 o Timestamp de Firestore en vez de string local
+    items,
+    personal_data: {
+      name: personalData.name,
+      contact_number: personalData.contactNumber,
+      contact_mail: personalData.contactMail,
+    },
+    shipping_data: formattedShippingData,
+    total_product_shipping: shipping,
+    total_purchase: cart.finalPrice,
+  };
+
+  const docRef = await firestore.collection("purchases").add(formattedPurchase);
+  return docRef.id;
 }
 
 export async function getProductsBySubcategory(subcategory:string):Promise<Product[]>{
@@ -234,6 +265,11 @@ export async function getProductsByCategory(category:string,subcategories:string
 
 export async function getFeaturedProducts():Promise<Product[]>{
   return getProductsByProperty('featured',true);
+  
+}
+//Para nuevos ingresos
+export async function getNew():Promise<Product[]>{
+  return getProductsByProperty('new',true);
   
 }
 

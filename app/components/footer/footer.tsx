@@ -8,10 +8,10 @@ export default function Footer() {
                 <div className={styles.gridContainer}>
                     <div className={styles.brandColumn}>
                         <Link href="/" className={styles.brandLogo}>
-                            MARQUESSA  REBEL
+                            SANTA CALLE
                         </Link>
                         <p className={styles.brandDescription}>
-                            Tu Estilo te hace única (placeholder)
+                            Tu Estilo es tu voz
                         </p>
                     </div>
 
@@ -19,18 +19,8 @@ export default function Footer() {
                         <h4 className={styles.sectionTitle}>Tienda</h4>
                         <ul className={styles.linkList}>
                             <li>
-                                <Link href="/productos" className={styles.linkItem}>
+                                <Link href="/products" className={styles.linkItem}>
                                     Todos los productos
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/colecciones" className={styles.linkItem}>
-                                    Colecciones
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/ofertas" className={styles.linkItem}>
-                                    Ofertas
                                 </Link>
                             </li>
                         </ul>
@@ -40,15 +30,11 @@ export default function Footer() {
                         <h4 className={styles.sectionTitle}>Ayuda</h4>
                         <ul className={styles.linkList}>
                             <li>
-                                <Link href="/envios" className={styles.linkItem}>
+                                <Link href="/shipping" className={styles.linkItem}>
                                     Envíos
                                 </Link>
                             </li>
-                            <li>
-                                <Link href="/devoluciones" className={styles.linkItem}>
-                                    Devoluciones
-                                </Link>
-                            </li>
+                          
                         </ul>
                     </div>
 
@@ -56,14 +42,9 @@ export default function Footer() {
                         <h4 className={styles.sectionTitle}>Seguinos</h4>
                         <ul className={styles.linkList}>
                             <li>
-                                <Link href="/privacidad" className={styles.linkItem}>
+                                <a href="https://www.instagram.com/somossantacalle?igsh=bDRwZDU4bHd6YzZv" className={styles.linkItem}>
                                     Instagram
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/terminos" className={styles.linkItem}>
-                                    TikTok
-                                </Link>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -71,8 +52,12 @@ export default function Footer() {
 
                 <div className={styles.bottomBar}>
                     <p className={styles.copyright}>
-                        © 2026 Marquessa Rebel. Todos los derechos reservados.
+                        © 2026 Santa Calle. Todos los derechos reservados.
                     </p>
+                    <p className={styles.copyright}>Desarrollado por  
+                        <a href="https://www.linkedin.com/in/luca-stombellini-a68402225/"
+                         target="_BLANK"
+                         rel="noopener noreferrer"> Luca Stombellini</a></p>
                 </div>
             </div>
         </footer>

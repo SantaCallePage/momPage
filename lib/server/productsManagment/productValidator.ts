@@ -6,7 +6,7 @@ import { ProductNotFoundError } from "../errors";
 
 interface ValidatedProducts {
     isStockAvailable: boolean;
-    details: { id: string; variant: string; requested: number; available: number }[];
+    details: { id: string; variantName: string; requestedQuantity: number; available: number, name:string }[];
     products:Product[]
 }
 
@@ -43,8 +43,9 @@ export async function validateProductsStock(cartItems: CartSimplifiedItem[]): Pr
             toRet.isStockAvailable = false;
             toRet.details.push({
                 id: item.id,
-                variant: item.variantName,
-                requested: item.quantity,
+                name: dbProduct.name,
+                variantName: item.variantName,
+                requestedQuantity: item.quantity,
                 available: availableStock
             });
         }
@@ -59,24 +60,23 @@ export async function validateCart(simplifiedCart:SimplifiedCart):Promise<Cart |
     
         const itemsDetailed: CartItem[] = simplifiedCart.items.map((item: CartSimplifiedItem) => {      
             const product= products.find((p) => p.id === item.id)
-            const availabe = (details.find((i) => i.id === item.id && i.variant === item.variantName) === undefined)
+            const availabe = (details.find((i) => i.id === item.id && i.variantName === item.variantName) === undefined)
             return {
                 id: item.id,
                 productName: product?.name || "", 
                 variantName: item.variantName,
-                quantity: item.quantity,
-                price: availabe ? (product?.price || 0) : 0,
-                totalPrice: availabe&&product ? ((product?.price * (1 - product?.discountPercentage/100)|| 0) * item.quantity) : 0,
+                quantity: availabe ? item.quantity : product ? product.variants.find((v)=>v.name === item.variantName)?.stock! : 0,
+                price: (product?.price || 0),
+                totalPrice: availabe&&product ? ((product?.price * (1 - product?.discountPercentage/100)|| 0) * item.quantity)
+                 : product ? ((product?.price * (1 - product?.discountPercentage/100)|| 0) * product.variants.find((v)=>v.name === item.variantName)?.stock!) : 0,
                 discountPercentage: availabe ? (product?.discountPercentage || 0) : 0
             };
         });
     
-        //const itemsDetailed = await Promise.all(itemsDetailedPromises);
-    
         const cart = {
             items: itemsDetailed,
             totalPrice: itemsDetailed.reduce((acc, item) =>  acc + item.price, 0),
-            finalPrice: itemsDetailed.reduce((acc, item) => acc + item.price * (1 - item.discountPercentage / 100), 0),
+            finalPrice: itemsDetailed.reduce((acc, item) => acc + item.totalPrice, 0),
         }
     
         if (!isStockAvailable) {

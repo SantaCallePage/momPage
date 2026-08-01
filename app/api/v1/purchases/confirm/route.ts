@@ -3,21 +3,22 @@ import { validateCart } from "@/lib/server/productsManagment/productValidator";
 import { NextResponse } from "next/server";
 import { getShipping } from "@/lib/server/shipping.ts/correoArgentinoAPIClient";
 import { ProductNotFoundError } from "@/lib/server/errors";
+import { PersonalData } from "@/models/shipping";
 
 export async function POST(request: Request):Promise<NextResponse> {
-    const { simplifiedCart: SimplifiedCart, customerData: CustomerData } = await request.json();
+    const { simplifiedCart, personalData, shippingData } = await request.json();
 
-    console.log('SimplifiedCart',SimplifiedCart)
+    console.log('SimplifiedCart',simplifiedCart)
 
    // console.log('SimplifiedCart:', typeof SimplifiedCart.items);
 
 
     try {
-        const cart = await validateCart(SimplifiedCart);
+        const cart = await validateCart(simplifiedCart);
         
        // console.log("cart",cart);
 
-        console.log("CustomerData",CustomerData);
+        console.log("CustomerData",personalData);
 
         if('itemsWidoutStock' in cart){
             return NextResponse.json({ error: 'Insufficient stock for one or some products', details: cart }, { status: 406 });
@@ -28,7 +29,7 @@ export async function POST(request: Request):Promise<NextResponse> {
         const shipping:number = await getShipping(); //Esto devuelve 0
         
         // For Debugging reazons Ill disabled this 
-        await uploadPurchase(cart,CustomerData,shipping);
+        await uploadPurchase(cart,personalData, shippingData ,shipping);
 
         return NextResponse.json({message:'Purchase confirmed'}, { status: 201 });
 

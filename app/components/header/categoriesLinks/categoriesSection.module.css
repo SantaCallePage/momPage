@@ -69,7 +69,7 @@ details[open]::details-content {
 
 .details_content{
   
-  left:-100%;
+  left:0;
 }
 
 .details[open]::details-content {
@@ -78,6 +78,7 @@ details[open]::details-content {
 
 .desk_menu {
   display: none;
+  transition: height 1s ease, content-visibility 1s allow-discrete;
 }
 
 .summary {

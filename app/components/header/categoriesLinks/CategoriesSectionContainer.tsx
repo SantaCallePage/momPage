@@ -20,8 +20,8 @@ export default function CategoriesSectionContainer({ categories }: CategoriesSec
         <div className={`${styles.main_container}`}  >
             <AnimatePresence>
 
-                <div className={styles.ham_menu}>
-                    <DropDownDetails isAbsolute={true} summaryText={"Explorar tienda"}>
+                <div className={`${styles.ham_menu}`}>
+                    <DropDownDetails isAbsolute={true} summaryText={"Categorías"}>
                         <motion.div
 
                         >

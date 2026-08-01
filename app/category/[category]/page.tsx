@@ -5,9 +5,8 @@ import { Product } from "@/models/product";
 import ProductsListGrid from "@/app/components/productsContainers/productList";
 import { capitalizeAllSentence } from "@/lib/client/generalServices/generalServices";
 import { img, span } from "motion/react-client";
-import imagenGordoToni from "@/public/gordoToni.jpg"
 import Image from "next/image";
-
+import type { Metadata } from "next";
 export const revalidate = 600;
 
 export async function generateStaticParams() {
@@ -18,6 +17,19 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata(
+  { params }: { params: Promise<{ category: string }> }
+): Promise<Metadata> {
+
+  const { category } = await params;
+
+  
+
+  return {
+    title: `${category}`,
+    description: "Srry, we've not description",
+  };
+}
 
 export default async function CategoryPage({
   params,
@@ -42,7 +54,7 @@ export default async function CategoryPage({
 
   return (
     <main>
-      <h2>{ capitalizeAllSentence(category)}</h2>
+      <h2 className="font-black text-5xl m-4" >{ capitalizeAllSentence(category)}</h2>
       
       {subcategories.map((subcategory:string)=>{
               //const subcategoryProducts = categoryProds.filter((p:Product)=>p.subcategory === subcategory);
@@ -50,7 +62,7 @@ export default async function CategoryPage({
               return categoryProdsGrouped.get(subcategory) != undefined ? <ProductsListGrid key={`${category}+${subcategory}`} 
               name={subcategory}
                type="subcategory"
-               products={categoryProdsGrouped.get(subcategory)!} /> : <Image src={imagenGordoToni} key={`${category}+${subcategory}`} alt="" />
+               products={categoryProdsGrouped.get(subcategory)!} /> : ""
             })}
     </main>
   );

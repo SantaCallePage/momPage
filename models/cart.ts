@@ -25,12 +25,20 @@ export interface Cart{
     finalPrice: number;
 }
 
+
+
 export interface ErrorItem{
     id:string;
+    name:string;
+    variantName:string;
     requestedQuantity:number;
-    availableStock:number;
+    available:number;
 }
 
 export interface ErrorCart extends Cart{
     itemsWidoutStock:ErrorItem[];
+}
+
+export function isErrorCart(cart : Cart | ErrorCart | null) : cart is ErrorCart{
+    return cart !== null && "itemsWidoutStock" in cart
 }

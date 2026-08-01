@@ -22,6 +22,10 @@
     transition: transform 0.2s ease;
 }
 
+.item_error{
+    border: 1px solid #eb0a0a; 
+}
+
 .item_main_container:hover {
     border-color: #ddd;
 }
@@ -47,7 +51,7 @@
 }
 
 .item_name {
-    font-size: 1.2rem;
+    font-size: 1.9rem;
     font-weight: 600;
     color: #222;
 }
@@ -76,15 +80,16 @@
 }
 
 .item_quantity {
-    font-size: 0.9rem;
+    font-size: 1.6rem;
     color: #666;
     background: #f0f0f0;
     padding: 2px 8px;
     border-radius: 4px;
+    font-weight: 700;
 }
 
 .item_total_price {
-    font-size: 1.4rem;
+    font-size: 1.9rem;
     font-weight: 700;
     color: #1a1a1a;
 }
@@ -135,6 +140,11 @@
     font-weight: 600;
     margin-top: 1rem;
     transition: background 0.2s;
+}
+
+.continue_buiying_button{
+    background: #a1a1a1;
+    color: #fff;
 }
 
 .buy_button:hover {

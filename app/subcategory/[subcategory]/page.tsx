@@ -2,6 +2,7 @@ import { getAllSubcategories, getProductsBySubcategory } from "@/lib/server/fire
 import ProductGrid from "@/app/components/productsContainers/productGrid";
 import { capitalizeAllSentence } from "@/lib/client/generalServices/generalServices";
 import styles from "./subcategoryPage.module.css"
+import type { Metadata } from "next";
 
 export const revalidate = 600;
 
@@ -12,6 +13,18 @@ export async function generateStaticParams() {
   return subcategories.map((sub: string) => ({
     subcategory: sub,
   }));
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ subcategory: string }> }
+): Promise<Metadata> {
+
+  const { subcategory } = await params;
+
+  return {
+    title: `${subcategory}`,
+    description: "Srry, we've not description",
+  };
 }
 
 export default async function CategoryPage({

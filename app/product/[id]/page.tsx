@@ -2,6 +2,7 @@ import { getAllProducts, getAllSubcategories, getProductById, getProductsBySubca
 import ProductGrid from "@/app/components/productsContainers/productGrid";
 import { Product } from "@/models/product";
 import ProductView from "@/app/components/productView/productView";
+import type { Metadata } from "next";
 
 export const revalidate = 600;
 
@@ -12,6 +13,21 @@ export async function generateStaticParams() {
   return products.map((prod:Product) => ({
     id:prod.id
   }));
+}
+
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ id: string }> }
+): Promise<Metadata> {
+
+  const { id } = await params;
+
+  const producto = await getProductById(id);
+
+  return {
+    title: `${producto.name}`,
+    description: producto.description,
+  };
 }
 
 export default async function CategoryPage({

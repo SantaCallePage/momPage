@@ -11,6 +11,11 @@ export function validateMail(mail: string): boolean {
 }
 
 export function getErrorText(name: string, val: string): string {
+  
+    if (name == dir_fields[5] || name == dir_fields[6] || name == dir_fields[7]){
+        return ""
+    }
+
     let toRet = "";
     const value = val;
     if (!value) {
@@ -37,6 +42,5 @@ export function getErrorText(name: string, val: string): string {
             }
             break;
     }
-    console.log(` toRet: ${toRet}`)
     return toRet;
 }

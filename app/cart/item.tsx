@@ -14,15 +14,14 @@ import { capitalizeAllSentence } from "@/lib/client/generalServices/generalServi
 
 interface cartItemViewProps {
     item: CartItem;
+    isError:boolean
 }
 
-export default function CartItemView(props: cartItemViewProps) {
+export default function CartItemView({item, isError}: cartItemViewProps) {
 
     const { removeItem } = useCart();
 
     const [imageSrc, setImageSrc] = useState<string>("");
-
-    const item: CartItem = props.item;
 
     const deleteHandler = () => {
         removeItem(item.id, item.variantName)
@@ -41,7 +40,7 @@ export default function CartItemView(props: cartItemViewProps) {
 
     return (
         <motion.div
-            className={`${styles.item_main_container}`}
+            className={`${styles.item_main_container} ${isError ? styles.item_error : ""}`}
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
         >
@@ -59,7 +58,7 @@ export default function CartItemView(props: cartItemViewProps) {
             </div>
             <div className={`${styles.data_section}`}>
                 <div className={`${styles.top_section}`}>
-                    <span className={`${styles.item_name}`} > {`${item.productName} ${item.variantName}`}</span>
+                    <span className={`${styles.item_name}`} > {`${item.productName} - ${item.variantName}`}</span>
                     <button className={`${styles.item_delete_button}`} onClick={deleteHandler} > <Trash2 /> </button>
                 </div>
 

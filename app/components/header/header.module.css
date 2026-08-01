@@ -9,6 +9,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    gap: 5dvw;
 }
 
 .bottom_section{
@@ -46,4 +47,11 @@
 .main_image_container{
     align-self: center;
     justify-self: center;
+    padding-top: 0.5em;
+}
+
+@media screen and (min-width: 1024px) {
+    .main_image{
+         margin: 0 7dvw;
+    }
 }

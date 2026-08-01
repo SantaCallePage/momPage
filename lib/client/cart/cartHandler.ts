@@ -1,6 +1,7 @@
 
 import { Cart,SimplifiedCart,ErrorCart } from "@/models/cart";
 import { CustomerData } from "@/models/customer";
+import { PersonalData, ShippingData } from "@/models/shipping";
 
 export interface ResponseConfirm{
     message:string,
@@ -38,8 +39,8 @@ export async function validateCart(simplifiedCart: SimplifiedCart): Promise<Cart
     
 }   
 
-export async function confirmPurchase(simplifiedCart:SimplifiedCart, customerData:CustomerData):Promise<ResponseConfirm>{
-    const param = {simplifiedCart:simplifiedCart, customerData:customerData};
+export async function confirmPurchase(simplifiedCart:SimplifiedCart, personalData:PersonalData,shippingData:ShippingData):Promise<ResponseConfirm>{
+    const param = {simplifiedCart:simplifiedCart, personalData:personalData,shippingData:shippingData};
 
     const toRet = {message:"",error:true,details:{}}
 

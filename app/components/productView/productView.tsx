@@ -56,6 +56,11 @@ export default function ProductView(props: productViewProps) {
         }
     }, [currentVariant]);
 
+    const variantSelectionHandler = (variant:string) =>{
+        setQuantity(1);
+        setCurrentVariant(variant);
+    }
+
     return (
         <div className={`${styles.main_container}`}>
 
@@ -63,7 +68,7 @@ export default function ProductView(props: productViewProps) {
 
             <PreviewsContainer groups={groups} currentImageIndex={currentImageIndex} currentVariant={currentVariant} scrollRef={scrollRef} />
 
-            <VariantsNames setCurrentVariant={setCurrentVariant} currentVariant={currentVariant} product={product} />
+            <VariantsNames setCurrentVariant={variantSelectionHandler} currentVariant={currentVariant} product={product} />
 
             <div className={`${styles.name_price_container}`}>
                 <span className={`${styles.name}`}>{product.name} {currentVariant}</span>

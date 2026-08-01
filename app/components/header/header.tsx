@@ -3,7 +3,7 @@ import CategoriesSection from "./categoriesLinks/categoriesSection"
 import Link from "next/link"
 import CartIcon from "./cart/cartIcon"
 import Image from "next/image"
-import logo from "@/assets/MarquessaIcon.jpeg"
+import logo from "@/assets/santaCalleIcon.webp"
 
 export default function Header(){
 
@@ -16,13 +16,13 @@ export default function Header(){
                     className={`${styles.main_image}`}
                     src={logo}
                     alt="Logo"
-                    width={150}
+                    width={200}
                 /> </Link>
                 <CategoriesSection/>
                 <CartIcon/>
             </div>
             <div className={`${styles.bottom_section}`}>
-                
+               
             </div>
             
         </header>

@@ -109,7 +109,7 @@ export default function DropDownDetails({ summaryText ,summaryHref ,children, is
             exit="closed"
             style={{ overflow: 'hidden' }}
           >
-            <div className={`${styles.details_content}`} style={{ ...containerStyle ,padding: '15px', borderTop: '1px solid #eee' }}>
+            <div className={`${styles.details_content} ${styles.details}`} style={{ ...containerStyle ,padding: '15px', borderTop: '1px solid #eee' }}>
               {children}
             </div>
           </motion.div>

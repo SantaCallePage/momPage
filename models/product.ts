@@ -13,4 +13,6 @@ export interface Product{
     subcategory: string;
     discountPercentage: number;
     variants: Variant[];
+    featured: boolean,
+    new:boolean,
 }
