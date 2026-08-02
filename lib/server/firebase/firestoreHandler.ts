@@ -245,10 +245,11 @@ export async function getProductsBySubcategory(subcategory:string):Promise<Produ
   
 }
 
-export async function getProductsByCategory(category:string,subcategories:string[]):Promise<Product[]>{
+//TODO esto se hace así because esta devuelve
+export async function getProductsByCategory(category:string):Promise<Product[]>{
   //const subcategories = await getSubCategories(category);
 
-  const requests = subcategories.map((sub:string) => 
+  /*const requests = subcategories.map((sub:string) => 
   firestore.collection('products')
     .where('subcategory', '==', sub)
     .limit(4)
@@ -259,7 +260,8 @@ export async function getProductsByCategory(category:string,subcategories:string
 
   const filtredProducts = snapshots.map((snapshot)=>snapshot.docs.map(doc=>mapFirestoreProduct(doc.id,doc.data())));
 
-  return filtredProducts != undefined ? filtredProducts.flat() : [];
+  return filtredProducts != undefined ? filtredProducts.flat() : [];*/
+  return getProductsByProperty('category',category);
   
 }
 

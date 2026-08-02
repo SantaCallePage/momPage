@@ -23,7 +23,7 @@ export async function generateMetadata(
 
   const { category } = await params;
 
-  
+
 
   return {
     title: `${category}`,
@@ -34,36 +34,41 @@ export async function generateMetadata(
 export default async function CategoryPage({
   params,
 }: {
-  params: Promise<{category: string }>;
+  params: Promise<{ category: string }>;
 }) {
 
-    const category = (await params).category;
-    const subcategories = await getSubCategories(category);
-    const categoryProds = await getProductsByCategory(category.replaceAll("_"," "),subcategories.map((s)=>s.replaceAll("_"," ")));
-    const categoryProdsGrouped = new Map<string,Product[]>();
-    for (const p of categoryProds){
-      if(!categoryProdsGrouped.has(p.subcategory)){
-        categoryProdsGrouped.set(p.subcategory,[])
-      }
-      categoryProdsGrouped.get(p.subcategory)?.push(p);
+
+  const replaceLeftAcents = (text: string) => {
+    return text.replace(/à/g, 'á')
+      .replace(/è/g, 'é')
+      .replace(/ì/g, 'í')
+      .replace(/ò/g, 'ó')
+      .replace(/ù/g, 'ú')
+  }
+  const category = replaceLeftAcents(decodeURIComponent((await params).category));
+  const subcategories = await getSubCategories(category);
+  const categoryProds = await getProductsByCategory("marroquinería");
+  const categoryProdsGrouped = new Map<string, Product[]>();
+  for (const p of categoryProds) {
+    if (!categoryProdsGrouped.has(p.subcategory)) {
+      categoryProdsGrouped.set(p.subcategory, [])
     }
-    subcategories.map((s)=>{
-      console.log(s);
-      console.log(`s: ${s == undefined}; cpg: ${categoryProdsGrouped.get(s) == undefined}`)
-    })
+    categoryProdsGrouped.get(p.subcategory)?.push(p);
+  }
+  subcategories.map((s) => {
+    console.log(s);
+    console.log(`s: ${s == undefined}; cpg: ${categoryProdsGrouped.get(s) == undefined}`)
+  })
 
   return (
     <main>
-      <h2 className="font-black text-5xl m-4" >{ capitalizeAllSentence(category)}</h2>
-      
-      {subcategories.map((subcategory:string)=>{
-              //const subcategoryProducts = categoryProds.filter((p:Product)=>p.subcategory === subcategory);
-
-              return categoryProdsGrouped.get(subcategory) != undefined ? <ProductsListGrid key={`${category}+${subcategory}`} 
-              name={subcategory}
-               type="subcategory"
-               products={categoryProdsGrouped.get(subcategory)!} /> : ""
-            })}
+      <h2 className="font-black text-5xl m-4" >{capitalizeAllSentence(category)}</h2>
+      {subcategories.map((subcategory: string) => {
+        return categoryProdsGrouped.get(subcategory) != undefined ? <ProductsListGrid key={`${category}+${subcategory}`}
+          name={subcategory}
+          type="subcategory"
+          products={categoryProdsGrouped.get(subcategory)!} /> : ""
+      })}
     </main>
   );
 }

@@ -33,9 +33,18 @@ export default async function CategoryPage({
   params: Promise<{subcategory: string }>;
 }) {
 
-    const subcategory = (await params).subcategory.replaceAll("_"," ");
+  const replaceLeftAcents = (text: string) => {
+    return text.replace(/à/g, 'á')
+      .replace(/è/g, 'é')
+      .replace(/ì/g, 'í')
+      .replace(/ò/g, 'ó')
+      .replace(/ù/g, 'ú')
+  }
+  const subcategory = replaceLeftAcents(decodeURIComponent((await params).subcategory));
+
+  //const subcategory = (await params).subcategory.replaceAll("_"," ");
   const products = await getProductsBySubcategory(subcategory.replaceAll("_"," "));
-    const sc = await getAllSubcategories();
+  const sc = await getAllSubcategories();
 
   return (
     <main className={`${styles.main_container}`} >
