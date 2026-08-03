@@ -13,7 +13,7 @@ export const config: VercelConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: process.env.SUPABASE_HOSTNAME || "bodvkovfmzgqeqqzxiwr.supabase.co",
+        hostname: "bodvkovfmzgqeqqzxiwr.supabase.co",
         port: '',
         pathname: '^/storage/v1/object/public/.*$',
       },
