@@ -34,6 +34,7 @@ const Carrousel = ({ currentImageIndex, currentVariant, scrollRef, images, setCu
                             alt="Product image"
                             width={500}
                             height={500}
+                            unoptimized={true}
                         />
                     })
                     : ""}</div>

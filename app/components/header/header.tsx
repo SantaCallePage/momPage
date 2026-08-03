@@ -17,6 +17,7 @@ export default function Header(){
                     src={logo}
                     alt="Logo"
                     width={200}
+                    unoptimized={true}
                 /> </Link>
                 <CategoriesSection/>
                 <CartIcon/>

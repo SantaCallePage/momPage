@@ -52,6 +52,7 @@ export default function CartItemView({item, isError}: cartItemViewProps) {
                         alt="Item image"
                         width={100}
                         height={100}
+                        unoptimized={true}
                        
                     />
                     : ""}

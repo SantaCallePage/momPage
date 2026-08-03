@@ -67,6 +67,7 @@ export default function ProductPreview(prop: ProductPreviewProps) {
                                 width={500}
                                 height={500}
                                 priority={index == 0}
+                                unoptimized={true}
 
                             />
 
