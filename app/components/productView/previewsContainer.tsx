@@ -30,10 +30,13 @@ export default function PreviewsContainer({ currentVariant, groups, currentImage
                                 return <Image
                                     className={`${styles.image} cursor-pointer`}
                                     key={url + url}
+                                    unoptimized={true}
                                     src={url}
                                     alt="Product image"
                                     width={500}
                                     height={500}
+                                    
+
                                     onClick={(e) => {
                                         const move = ((i * 4 + j) - currentImageIndex) * scrollRef.current?.offsetWidth!;
                                         scroll(move)
