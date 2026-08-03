@@ -11,7 +11,7 @@
     "remotePatterns": [
       {
         "protocol": "https",
-        "hostname": "bodvkovfmzgqeqqzxiwr.supabase.co",
+        "hostname": "https://bodvkovfmzgqeqqzxiwr.supabase.co",
         "port": "",
         "pathname": "^/storage/v1/object/public/.*$"
       }
