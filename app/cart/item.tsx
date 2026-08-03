@@ -49,7 +49,7 @@ export default function CartItemView({item, isError}: cartItemViewProps) {
                     <Image
                         className={`${styles.image}`}
                         src={imageSrc}
-                        alt="Rem image"
+                        alt="Item image"
                         width={100}
                         height={100}
                        

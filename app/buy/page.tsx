@@ -1,7 +1,7 @@
 "use client"
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../contexts/cartContext";
-import { CustomerData, PersonalData } from "@/models/customer";
+import { PersonalData } from "@/models/customer";
 import { confirmPurchase, ResponseConfirm } from "@/lib/client/cart/cartHandler";
 import { dir_fields, getErrorText, personal_data_fields } from "@/lib/client/purchase/purchaseServices";
 import styles from "./buy.module.css"

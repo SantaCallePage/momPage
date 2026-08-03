@@ -3,7 +3,6 @@
 import { Product } from "@/models/product";
 import styles from "./productView.module.css"
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useCart } from "@/app/contexts/cartContext";
 import BuyButton from "./buyButton";
 import VariantsNames from "./variantsNames";
 import PreviewsContainer from "./previewsContainer";

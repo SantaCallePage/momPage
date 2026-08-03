@@ -1,5 +1,4 @@
-import { getAllProducts, getAllSubcategories, getProductById, getProductsBySubcategory } from "@/lib/server/firebase/firestoreHandler";
-import ProductGrid from "@/app/components/productsContainers/productGrid";
+import { getAllProducts, getProductById } from "@/lib/server/firebase/firestoreHandler";
 import { Product } from "@/models/product";
 import ProductView from "@/app/components/productView/productView";
 import type { Metadata } from "next";

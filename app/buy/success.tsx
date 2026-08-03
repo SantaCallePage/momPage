@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
 import styles from "./success.module.css";
-import { confirmPurchase, ResponseConfirm } from "@/lib/client/cart/cartHandler";
+import { ResponseConfirm } from "@/lib/client/cart/cartHandler";
 import { Copy, Check } from "lucide-react";
 
 export default function Succes({response}:{response:ResponseConfirm}){

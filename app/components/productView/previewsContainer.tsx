@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import styles from "./productView.module.css"
 import Image from "next/image"
 

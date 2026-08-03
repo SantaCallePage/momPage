@@ -3,7 +3,7 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import {ArrowUpRight, SquareChevronDown } from "lucide-react"
 import styles from "./categoriesSection.module.css"
 import Link from 'next/link';
-// Definimos la interfaz para las props del componente
+
 interface CustomDetailsProps {
   summaryText: string;
   children: React.ReactNode;

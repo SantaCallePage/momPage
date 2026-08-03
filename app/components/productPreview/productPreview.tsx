@@ -1,7 +1,7 @@
 "use client"
 
 import { Product, Variant } from "@/models/product"
-import { useEffect, useState, useRef, useMemo } from "react"
+import {  useState, useRef, useMemo } from "react"
 
 import Image from "next/image"
 import styles from "./productPreview.module.css"

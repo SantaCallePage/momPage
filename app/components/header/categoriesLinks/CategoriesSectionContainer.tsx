@@ -1,13 +1,9 @@
 "use client"
 import styles from "./categoriesSection.module.css"
-
 import { Category } from "@/models/categories"
 import CategoriesContainer from "./categoriesContainer"
-import { useEffect, useRef } from "react"
-
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react";
-import { SquareChevronDown, SquareChevronUp } from "lucide-react"
 import DropDownDetails from "./dropDownDetails"
 
 interface CategoriesSectionProps {

@@ -1,11 +1,8 @@
 import { getCategories, getProductsByCategory, getSubCategories } from "@/lib/server/firebase/firestoreHandler";
-import ProductGrid from "@/app/components/productsContainers/productGrid";
 import { Category } from "@/models/categories";
 import { Product } from "@/models/product";
 import ProductsListGrid from "@/app/components/productsContainers/productList";
 import { capitalizeAllSentence } from "@/lib/client/generalServices/generalServices";
-import { img, span } from "motion/react-client";
-import Image from "next/image";
 import type { Metadata } from "next";
 export const revalidate = 600;
 
