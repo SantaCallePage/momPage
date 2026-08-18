@@ -16,7 +16,7 @@ export default function Header(){
                     className={`${styles.main_image}`}
                     src={logo}
                     alt="Logo"
-                    width={200}
+                    width={135}
                     unoptimized={true}
                 /> </Link>
                 <CategoriesSection/>

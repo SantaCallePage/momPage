@@ -118,7 +118,7 @@ export default function CartSection(){
             </button>
 
             <button onClick={()=>handleBuybutton()} className={styles.buy_button}>
-                Call To Action Sin Nombre
+                Iniciar Compra
             </button>
         </div>
     )}

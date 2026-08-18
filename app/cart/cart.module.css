@@ -131,24 +131,33 @@
 
 .buy_button {
     display: block;
+    width: 100%;
     text-align: center;
-    background: #0070f3;
-    color: #fff;
-    padding: 1rem;
+    background: #18181b;
+    color: #ffffff;
+    padding: 1.4rem;
     border-radius: 8px;
+    border: none;
+    cursor: pointer;
     text-decoration: none;
+    font-size: 1.5rem;
     font-weight: 600;
     margin-top: 1rem;
-    transition: background 0.2s;
-}
-
-.continue_buiying_button{
-    background: #a1a1a1;
-    color: #fff;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buy_button:hover {
-    background: #0051af;
+    background: #27272a;
+}
+
+.continue_buiying_button {
+    background: #f4f4f5;
+    color: #18181b;
+    border: 1px solid #e4e4e7;
+}
+
+.continue_buiying_button:hover {
+    background: #e4e4e7;
 }
 
 .empty_cart_msg {

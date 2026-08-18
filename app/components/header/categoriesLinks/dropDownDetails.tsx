@@ -81,7 +81,8 @@ export default function DropDownDetails({ summaryText ,summaryHref ,children, is
           cursor: 'pointer',
           textAlign: 'left',
           outline: 'none',
-          gap:'20px'
+          gap:'20px',
+          background: 'transparent'
         }}
         aria-expanded={isOpen}
       >

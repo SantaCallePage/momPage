@@ -11,9 +11,13 @@ export default async function Home() {
 
   return (
     <main>
-      <HeroSection/>
-      <h3 className="font-black text-5xl m-4">Ultimos Ingresos</h3>
-      <ProductGrid products={prods}/>
+      <HeroSection />
+      <div className="max-w-[1320px] mx-auto px-4 md:px-6 pt-10 pb-2">
+        <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900 m-0">
+          Últimos Ingresos
+        </h2>
+      </div>
+      <ProductGrid products={prods} />
     </main>
   );
 }

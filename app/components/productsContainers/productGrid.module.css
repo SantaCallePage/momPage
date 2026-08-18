@@ -1,36 +1,31 @@
 .products_container {
     display: grid;
-    /* Respetamos tu configuración original */
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 1.5rem;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
 }
 
-/* Media Queries originales con tus minmax */
-@media screen and (min-width: 860px) {
+@media screen and (min-width: 768px) {
     .products_container {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem; /* Más espacio cuando los items son grandes */
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 2rem;
+        padding: 2rem 1.5rem;
     }
-
 }
 
-@media screen and (min-width: 1300px) {
+@media screen and (min-width: 1200px) {
     .products_container {
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-        gap: 3rem;
-    }
-
-    html {
-        font-size: 80%;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2.5rem;
+        max-width: 1320px;
+        margin: 0 auto;
     }
 }
 
-/* Tip para que los items dentro del grid se vean pro */
 .products_container > * {
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .products_container > *:hover {
-    transform: translateY(-8px);
+    transform: translateY(-3px);
 }
